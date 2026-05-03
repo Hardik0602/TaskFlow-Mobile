@@ -10,6 +10,7 @@ export default function Index() {
       }}
     >
       <Text>Edit app/index.tsx to edit this screen.</Text>
+      <Text className="text-green-400 text-3xl font-extrabold">uniwind</Text>
     </View>
   );
 }
