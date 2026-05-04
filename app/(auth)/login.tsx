@@ -1,0 +1,49 @@
+import Checkbox from 'expo-checkbox'
+import { router } from 'expo-router'
+import { useState } from 'react'
+import { Pressable, Text, TextInput, View } from 'react-native'
+import { useAuth } from '../../context/AuthContext'
+export default function LoginScreen() {
+    const { login } = useAuth()
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [rememberMe, setRememberMe] = useState(false)
+    const handleLogin = async () => {
+        await login(email, password, rememberMe)
+        if (email === 'admin' || email === 'Admin') {
+            router.replace('/adminDashboard')
+        } else {
+            router.replace('/dashboard')
+        }
+    }
+    return (
+        <View className='flex-1 justify-center px-6'>
+            <TextInput
+                placeholder='Email'
+                value={email}
+                onChangeText={setEmail}
+                className='border p-4 rounded-xl mb-4' />
+            <TextInput
+                placeholder='Password'
+                secureTextEntry
+                value={password}
+                onChangeText={setPassword}
+                className='border p-4 rounded-xl mb-4' />
+            <View className='flex-row items-center mb-4'>
+                <Checkbox
+                    value={rememberMe}
+                    onValueChange={setRememberMe} />
+                <Text className='ml-2'>
+                    Remember Me
+                </Text>
+            </View>
+            <Pressable
+                onPress={handleLogin}
+                className='bg-blue-500 p-4 rounded-xl'>
+                <Text className='text-white text-center'>
+                    Login
+                </Text>
+            </Pressable>
+        </View>
+    )
+}
