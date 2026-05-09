@@ -1,5 +1,6 @@
 import Checkbox from 'expo-checkbox'
 import { router } from 'expo-router'
+import { StatusBar } from 'expo-status-bar'
 import { useState } from 'react'
 import { Pressable, Text, TextInput, View } from 'react-native'
 import { useAuth } from '../../context/AuthContext'
@@ -18,6 +19,7 @@ export default function LoginScreen() {
     }
     return (
         <View className='flex-1 justify-center px-6'>
+            <StatusBar style='dark' />
             <TextInput
                 placeholder='Email'
                 value={email}

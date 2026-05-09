@@ -1,9 +1,9 @@
 import { Text, View } from 'react-native'
-export default function Profile() {
+export default function Notifications() {
   return (
     <View className='flex-1 items-center justify-center'>
       <Text className='text-2xl'>
-        Manager Profile
+        Manager Notifications
       </Text>
     </View>
   )
