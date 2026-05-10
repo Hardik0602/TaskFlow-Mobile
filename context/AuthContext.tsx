@@ -1,8 +1,10 @@
+import { API_URL } from '@/constants/api'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { createContext, useContext, useEffect, useState } from 'react'
 type User = {
-  id: number
+  id: string
   name: string
+  email: string
   role: 'admin' | 'manager'
 }
 type AuthContextType = {
@@ -20,9 +22,10 @@ const AuthContext = createContext<AuthContextType>(
 )
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   useEffect(() => {
     const restoreUser = async () => {
+      setLoading(true)
       try {
         const savedUser = await AsyncStorage.getItem('user')
         if (savedUser) {
@@ -42,26 +45,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     password: string,
     rememberMe: boolean
   ) => {
-    let foundUser: User
-    if (email === 'admin' || email === 'Admin') {
-      foundUser = {
-        id: 1,
-        name: 'Admin',
-        role: 'admin',
+    setLoading(true)
+    try {
+      const response = await fetch(`${API_URL}/users?email=${email}`)
+      const users = await response.json()
+      if (!users.length) {
+        throw new Error('User not found')
       }
-    } else {
-      foundUser = {
-        id: 2,
-        name: 'Manager',
-        role: 'manager',
+      const foundUser = users[0]
+      if (foundUser.password !== password) {
+        throw new Error('Invalid credentials')
       }
-    }
-    setUser(foundUser)
-    if (rememberMe) {
-      await AsyncStorage.setItem(
-        'user',
-        JSON.stringify(foundUser)
-      )
+      const loggedInUser: User = {
+        id: foundUser.id,
+        name: foundUser.name,
+        email: foundUser.email,
+        role: foundUser.role
+      }
+      setUser(loggedInUser)
+      if (rememberMe) {
+        await AsyncStorage.setItem(
+          'user',
+          JSON.stringify(loggedInUser)
+        )
+      }
+    } catch (error) {
+      throw error
+    } finally {
+      setLoading(false)
     }
   }
   const logout = async () => {

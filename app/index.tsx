@@ -1,8 +1,15 @@
 import { Redirect } from 'expo-router'
+import { Text, View } from 'react-native'
 import { useAuth } from '../context/AuthContext'
 export default function Index() {
   const { user, loading } = useAuth()
-  if (loading) return null
+  if (loading) {
+    return (
+      <View className='flex-1 items-center justify-center'>
+        <Text>loading</Text>
+      </View>
+    )
+  }
   if (!user) {
     return <Redirect href='/login' />
   } else if (user.role === 'admin') {
