@@ -1,8 +1,10 @@
-import { Redirect, Slot } from 'expo-router'
+import { Ionicons } from '@expo/vector-icons'
+import { Redirect } from 'expo-router'
+import { Drawer } from 'expo-router/drawer'
 import { StatusBar } from 'expo-status-bar'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { useAuth } from '../../context/AuthContext'
-import AdminNavBar from '../components/AdminNavBar'
+import AdminDrawerContent from '../components/AdminDrawerContent'
 export default function AdminLayout() {
   const { user } = useAuth()
   if (!user) {
@@ -12,10 +14,61 @@ export default function AdminLayout() {
     return <Redirect href='/' />
   }
   return (
-    <SafeAreaView mode='margin' edges={['top']} style={{ flex: 1 }}>
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <StatusBar style='dark' />
-      <AdminNavBar />
-      <Slot />
-    </SafeAreaView>
+      <Drawer
+        drawerContent={AdminDrawerContent}
+        screenOptions={{
+          drawerActiveTintColor: '#3949AB',
+          drawerHideStatusBarOnOpen: false,
+          headerShadowVisible: false
+        }}>
+        <Drawer.Screen
+          name='adminDashboard'
+          options={{
+            drawerLabel: 'Dashboard',
+            title: 'Admin Dashboard',
+            drawerIcon: ({ color, size }) => (
+              <Ionicons name='bar-chart-outline' size={size} color={color} />
+            )
+          }} />
+        <Drawer.Screen
+          name='report'
+          options={{
+            drawerLabel: 'Report',
+            title: 'System Report',
+            drawerIcon: ({ color, size }) => (
+              <Ionicons name='document-outline' size={size} color={color} />
+            )
+          }} />
+        <Drawer.Screen
+          name='userManagement'
+          options={{
+            drawerLabel: 'User Management',
+            title: 'User Management',
+            drawerIcon: ({ color, size }) => (
+              <Ionicons name='people-outline' size={size} color={color} />
+            )
+          }} />
+        <Drawer.Screen
+          name='tasks'
+          options={{
+            drawerLabel: 'Tasks',
+            title: 'System Tasks',
+            drawerIcon: ({ color, size }) => (
+              <Ionicons name='clipboard-outline' size={size} color={color} />
+            )
+          }} />
+        <Drawer.Screen
+          name='adminProfile'
+          options={{
+            drawerLabel: 'Profile',
+            title: 'Admin Profile',
+            drawerIcon: ({ color, size }) => (
+              <Ionicons name='person-outline' size={size} color={color} />
+            )
+          }} />
+      </Drawer>
+    </GestureHandlerRootView>
   )
 }

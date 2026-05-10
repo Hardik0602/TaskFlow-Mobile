@@ -1,10 +1,12 @@
-import { Text, View } from 'react-native'
+import { router } from 'expo-router'
+import { Pressable, Text, View } from 'react-native'
 export default function Dashboard() {
   return (
     <View className='flex-1 items-center justify-center'>
-      <Text className='text-2xl'>
-        Manager Dashboard
-      </Text>
+      <Pressable
+        onPress={() => router.push('/taskDetails')}>
+        <Text>go to task details</Text>
+      </Pressable>
     </View>
   )
 }
