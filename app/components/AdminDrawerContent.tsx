@@ -27,8 +27,7 @@ export default function AdminDrawerContent(props: DrawerContentComponentProps) {
                 className='px-3 pt-3 border-t border-slate-100'>
                 <Pressable
                     onPress={handleLogout}
-                    style={({ pressed }) => ({ backgroundColor: pressed ? '#fef2f2' : 'transparent' })}
-                    className='flex-row items-center gap-3 px-4 py-3 rounded-lg'>
+                    className='flex-row items-center gap-3 px-4 py-3 rounded-lg active:bg-red-50'>
                     <Ionicons name='log-out-outline' size={20} color='#dc2626' />
                     <Text className='text-sm font-medium text-red-600'>Sign Out</Text>
                 </Pressable>
