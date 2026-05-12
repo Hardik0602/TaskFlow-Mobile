@@ -22,7 +22,7 @@ const AuthContext = createContext<AuthContextType>(
 )
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   useEffect(() => {
     const restoreUser = async () => {
       setLoading(true)
@@ -48,6 +48,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setLoading(true)
     try {
       const response = await fetch(`${API_URL}/users?email=${email}`)
+      if (!response.ok) {
+        throw new Error('Something went wrong')
+      }
       const users = await response.json()
       if (!users.length) {
         throw new Error('User not found')
