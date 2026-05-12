@@ -23,21 +23,21 @@ const AuthContext = createContext<AuthContextType>(
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
-  useEffect(() => {
-    const restoreUser = async () => {
-      setLoading(true)
-      try {
-        const savedUser = await AsyncStorage.getItem('user')
-        if (savedUser) {
-          const parsedUser = JSON.parse(savedUser)
-          setUser(parsedUser)
-        }
-      } catch (err) {
-        console.log(err)
-      } finally {
-        setLoading(false)
+  const restoreUser = async () => {
+    setLoading(true)
+    try {
+      const savedUser = await AsyncStorage.getItem('user')
+      if (savedUser) {
+        const parsedUser = JSON.parse(savedUser)
+        setUser(parsedUser)
       }
+    } catch (err) {
+      console.log(err)
+    } finally {
+      setLoading(false)
     }
+  }
+  useEffect(() => {
     restoreUser()
   }, [])
   const login = async (

@@ -47,11 +47,15 @@ export default function Profile() {
   const cardOpacity = useRef(new Animated.Value(0)).current
   const cardTranslateY = useRef(new Animated.Value(16)).current
   useEffect(() => {
-    Animated.parallel([
-      Animated.timing(cardOpacity, { toValue: 1, duration: 400, useNativeDriver: true }),
-      Animated.timing(cardTranslateY, { toValue: 0, duration: 400, useNativeDriver: true })
-    ]).start()
-  }, [])
+    if (!loading) {
+      cardOpacity.setValue(0)
+      cardTranslateY.setValue(16)
+      Animated.parallel([
+        Animated.timing(cardOpacity, { toValue: 1, duration: 400, useNativeDriver: true }),
+        Animated.timing(cardTranslateY, { toValue: 0, duration: 400, useNativeDriver: true })
+      ]).start()
+    }
+  }, [loading])
   useEffect(() => {
     if (!loading) {
       progressAnim.setValue(0)
@@ -67,6 +71,15 @@ export default function Profile() {
     inputRange: [0, 100],
     outputRange: ['0%', '100%']
   })
+  if (loading) {
+    return (
+      <View className='flex-1 bg-slate-50 justify-center'>
+        <ActivityIndicator
+          size={50}
+          color={'#60A5FA'} />
+      </View>
+    )
+  }
   return (
     <ScrollView
       className='flex-1 bg-slate-50'
@@ -117,53 +130,46 @@ export default function Profile() {
           </View>
         </View>
       </Animated.View>
-      {loading
-        ? <ActivityIndicator
-          size={50}
-          color={'#60A5FA'}
-          className='mt-20' />
-        : <>
-          <View className='bg-white border border-slate-200 rounded-2xl p-5 mx-3 mb-4'>
-            <Text className='text-base font-semibold text-slate-900 mb-4'>Activity Overview</Text>
-            <View className='flex-row gap-2 mb-2'>
-              <StatCard value={totalTasks} label='Total' bgClass='bg-slate-50 border-slate-200' textClass='text-slate-900' labelClass='text-slate-500' delay={0} />
-              <StatCard value={completedTasks} label='Completed' bgClass='bg-green-50 border-green-200' textClass='text-green-600' labelClass='text-green-600' delay={60} />
-            </View>
-            <View className='flex-row gap-2'>
-              <StatCard value={pendingTasks} label='Pending' bgClass='bg-amber-50 border-amber-200' textClass='text-amber-600' labelClass='text-amber-600' delay={120} />
-              <StatCard value={overdueTasks} label='Overdue' bgClass='bg-red-50 border-red-200' textClass='text-red-600' labelClass='text-red-500' delay={180} />
-            </View>
+      <View className='bg-white border border-slate-200 rounded-2xl p-5 mx-3 mb-4'>
+        <Text className='text-base font-semibold text-slate-900 mb-4'>Activity Overview</Text>
+        <View className='flex-row gap-2 mb-2'>
+          <StatCard value={totalTasks} label='Total' bgClass='bg-slate-50 border-slate-200' textClass='text-slate-900' labelClass='text-slate-500' delay={0} />
+          <StatCard value={completedTasks} label='Completed' bgClass='bg-green-50 border-green-200' textClass='text-green-600' labelClass='text-green-600' delay={60} />
+        </View>
+        <View className='flex-row gap-2'>
+          <StatCard value={pendingTasks} label='Pending' bgClass='bg-amber-50 border-amber-200' textClass='text-amber-600' labelClass='text-amber-600' delay={120} />
+          <StatCard value={overdueTasks} label='Overdue' bgClass='bg-red-50 border-red-200' textClass='text-red-600' labelClass='text-red-500' delay={180} />
+        </View>
+      </View>
+      <View className='gap-4 mx-3'>
+        <View className='flex-1 bg-white border border-slate-200 rounded-2xl p-5'>
+          <View className='flex-row items-center justify-between mb-3'>
+            <Text className='text-sm font-semibold text-slate-900'>Completion</Text>
+            <Text className='text-xl font-bold text-blue-600'>{completionRate}%</Text>
           </View>
-          <View className='gap-4 mx-3'>
-            <View className='flex-1 bg-white border border-slate-200 rounded-2xl p-5'>
-              <View className='flex-row items-center justify-between mb-3'>
-                <Text className='text-sm font-semibold text-slate-900'>Completion</Text>
-                <Text className='text-xl font-bold text-blue-600'>{completionRate}%</Text>
-              </View>
-              <View className='h-2 bg-slate-200 rounded-full overflow-hidden'>
-                <Animated.View
-                  style={{ width: progressWidth }}
-                  className='h-2 bg-blue-600 rounded-full' />
-              </View>
-              <Text className='text-xs text-slate-400 mt-2'>
-                {completedTasks} of {totalTasks} tasks
-              </Text>
+          <View className='h-2 bg-slate-200 rounded-full overflow-hidden'>
+            <Animated.View
+              style={{ width: progressWidth }}
+              className='h-2 bg-blue-600 rounded-full' />
+          </View>
+          <Text className='text-xs text-slate-400 mt-2'>
+            {completedTasks} of {totalTasks} tasks
+          </Text>
+        </View>
+        <View className='flex-1 bg-white border border-slate-200 rounded-2xl p-5'>
+          <Text className='text-sm font-semibold text-slate-900 mb-3'>Performance</Text>
+          <View className='gap-2.5'>
+            <View className='flex-row items-center justify-between'>
+              <Text className='text-xs text-slate-500'>Avg response time</Text>
+              <Text className='text-xs font-semibold text-slate-900'>{avgResTime} Day{avgResTime !== 1 ? 's' : null}</Text>
             </View>
-            <View className='flex-1 bg-white border border-slate-200 rounded-2xl p-5'>
-              <Text className='text-sm font-semibold text-slate-900 mb-3'>Performance</Text>
-              <View className='gap-2.5'>
-                <View className='flex-row items-center justify-between'>
-                  <Text className='text-xs text-slate-500'>Avg response time</Text>
-                  <Text className='text-xs font-semibold text-slate-900'>{avgResTime} Day{avgResTime !== 1 ? 's' : null}</Text>
-                </View>
-                {/* <View className='flex-row items-center justify-between'>
+            {/* <View className='flex-row items-center justify-between'>
               <Text className='text-xs text-slate-500'>Tasks this month</Text>
               <Text className='text-xs font-semibold text-slate-900'>{totalTasks}</Text>
             </View> */}
-              </View>
-            </View>
           </View>
-        </>}
+        </View>
+      </View>
     </ScrollView>
   )
 }

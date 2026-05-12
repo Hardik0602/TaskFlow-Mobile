@@ -23,6 +23,10 @@ type TaskContextType = {
     overdueTasks: number
     pendingTasks: number
     completionRate: number
+    highPriority: number
+    mediumPriority: number
+    lowPriority: number
+    dueSoon: number
 }
 const TaskContext = createContext<TaskContextType>(
     {} as TaskContextType
@@ -32,6 +36,7 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
     const [tasks, setTasks] = useState<Task[]>([])
     const [loading, setLoading] = useState(true)
     const today = new Date()
+    const threeDays = new Date(today.getDate() + 3)
     const loadTasks = async () => {
         if (!user) return
         setLoading(true)
@@ -79,9 +84,29 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
             (completedTasks / totalTasks) * 100
         )
     }, [completedTasks, totalTasks])
+    const highPriority = useMemo(() => {
+        return tasks.filter(
+            task => task.status === 'pending' && (task.priority === 'high' || new Date(task.dueDate) < today)
+        ).length
+    }, [tasks])
+    const mediumPriority = useMemo(() => {
+        return tasks.filter(
+            task => task.status === 'pending' && task.priority === 'medium' && new Date(task.dueDate) >= today
+        ).length
+    }, [tasks])
+    const lowPriority = useMemo(() => {
+        return tasks.filter(
+            task => task.status === 'pending' && task.priority === 'low' && new Date(task.dueDate) >= today
+        ).length
+    }, [tasks])
+    const dueSoon = useMemo(() => {
+        return tasks.filter(
+            task => task.status === 'pending' && new Date(task.dueDate) >= today && new Date(task.dueDate) <= threeDays
+        ).length
+    }, [tasks])
     return (
         <TaskContext.Provider
-            value={{ tasks, loading, loadTasks, totalTasks, completedTasks, completionRate, overdueTasks, pendingTasks }}>
+            value={{ tasks, loading, loadTasks, totalTasks, completedTasks, completionRate, overdueTasks, pendingTasks, highPriority, mediumPriority, lowPriority, dueSoon }}>
             {children}
         </TaskContext.Provider>
     )
