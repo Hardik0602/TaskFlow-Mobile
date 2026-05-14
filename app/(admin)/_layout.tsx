@@ -28,6 +28,7 @@ export default function AdminLayout() {
           options={{
             drawerLabel: 'Dashboard',
             title: 'Admin Dashboard',
+            headerTitleAlign: 'center',
             drawerIcon: ({ color, size }) => (
               <Ionicons name='bar-chart-outline' size={size} color={color} />
             )
@@ -37,6 +38,7 @@ export default function AdminLayout() {
           options={{
             drawerLabel: 'Report',
             title: 'System Report',
+            headerTitleAlign: 'center',
             drawerIcon: ({ color, size }) => (
               <Ionicons name='document-outline' size={size} color={color} />
             )
@@ -46,6 +48,7 @@ export default function AdminLayout() {
           options={{
             drawerLabel: 'User Management',
             title: 'User Management',
+            headerTitleAlign: 'center',
             drawerIcon: ({ color, size }) => (
               <Ionicons name='people-outline' size={size} color={color} />
             )
@@ -55,6 +58,7 @@ export default function AdminLayout() {
           options={{
             drawerLabel: 'Tasks',
             title: 'System Tasks',
+            headerTitleAlign: 'center',
             drawerIcon: ({ color, size }) => (
               <Ionicons name='clipboard-outline' size={size} color={color} />
             )
@@ -64,6 +68,7 @@ export default function AdminLayout() {
           options={{
             drawerLabel: 'Profile',
             title: 'Admin Profile',
+            headerTitleAlign: 'center',
             drawerIcon: ({ color, size }) => (
               <Ionicons name='person-outline' size={size} color={color} />
             )

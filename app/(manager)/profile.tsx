@@ -82,6 +82,7 @@ export default function Profile() {
   }
   return (
     <ScrollView
+      showsVerticalScrollIndicator={false}
       className='flex-1 bg-slate-50'
       contentContainerStyle={{ paddingBottom: insets.bottom + 16 }}
       refreshControl={

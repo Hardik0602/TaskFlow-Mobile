@@ -28,6 +28,7 @@ export default function ManagerLayout() {
           options={{
             drawerLabel: 'Dashboard',
             title: 'Manager Dashboard',
+            headerTitleAlign: 'center',
             drawerIcon: ({ color, size }) => (
               <Ionicons name='bar-chart-outline' size={size} color={color} />
             )
@@ -37,6 +38,7 @@ export default function ManagerLayout() {
           options={{
             drawerLabel: 'Inbox',
             title: 'Manger Inbox',
+            headerTitleAlign: 'center',
             drawerIcon: ({ color, size }) => (
               <Ionicons name='mail-outline' size={size} color={color} />
             )
@@ -46,6 +48,7 @@ export default function ManagerLayout() {
           options={{
             drawerLabel: 'Notifications',
             title: 'Manger Notifications',
+            headerTitleAlign: 'center',
             drawerIcon: ({ color, size }) => (
               <Ionicons name='notifications-outline' size={size} color={color} />
             )
@@ -55,6 +58,7 @@ export default function ManagerLayout() {
           options={{
             drawerLabel: 'Profile',
             title: 'Manger Profile',
+            headerTitleAlign: 'center',
             drawerIcon: ({ color, size }) => (
               <Ionicons name='person-outline' size={size} color={color} />
             )

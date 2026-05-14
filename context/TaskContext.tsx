@@ -36,7 +36,8 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
     const [tasks, setTasks] = useState<Task[]>([])
     const [loading, setLoading] = useState(true)
     const today = new Date()
-    const threeDays = new Date(today.getDate() + 3)
+    const threeDays = new Date()
+    threeDays.setDate(today.getDate() + 3)
     const loadTasks = async () => {
         if (!user) return
         setLoading(true)
