@@ -2,7 +2,8 @@ import { useNotifications } from '@/context/NotificationContext'
 import { useTasks } from '@/context/TaskContext'
 import { Ionicons } from '@expo/vector-icons'
 import { router } from 'expo-router'
-import { ActivityIndicator, Pressable, RefreshControl, ScrollView, Text, View } from 'react-native'
+import { useEffect, useRef } from 'react'
+import { ActivityIndicator, Animated, Pressable, RefreshControl, ScrollView, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 type NotificationType = 'overdue' | 'dueSoon' | 'pending'
 const typeStyles: Record<NotificationType, {
@@ -46,6 +47,18 @@ export default function Notifications() {
       params: { taskId }
     })
   }
+  const listOpacity = useRef(new Animated.Value(0)).current
+  const listTranslateY = useRef(new Animated.Value(12)).current
+
+  useEffect(() => {
+    if (loading) return
+    listOpacity.setValue(0)
+    listTranslateY.setValue(12)
+    Animated.parallel([
+      Animated.timing(listOpacity, { toValue: 1, duration: 400, useNativeDriver: true }),
+      Animated.timing(listTranslateY, { toValue: 0, duration: 400, useNativeDriver: true }),
+    ]).start()
+  }, [loading])
   if (loading) {
     return (
       <View className='flex-1 bg-slate-50 justify-center'>
@@ -92,72 +105,74 @@ export default function Notifications() {
           refreshing={loading}
           onRefresh={loadTasks} />
       }>
-      <View className='flex-row items-center justify-between mx-3 my-4'>
-        <View>
-          <Text className='text-2xl font-bold text-slate-900'>Notifications</Text>
-          <Text className='text-sm text-slate-500 mt-0.5'>
-            {unread} unread of {notifications.length} total
-          </Text>
-        </View>
-        <Pressable
-          disabled={unread === 0}
-          onPress={markAllRead}
-          className='flex-row items-center gap-1.5 p-3 bg-blue-600 active:bg-blue-700 active:scale-[0.98] transition-all duration-150 rounded-xl disabled:opacity-50'>
-          <Ionicons name='checkmark-circle-outline' size={20} color='white' />
-          <Text className='text-white text-[15px] font-medium'>Mark all as read</Text>
-        </Pressable>
-      </View>
-      <View className='mx-3 gap-3'>
-        {unread === 0 && (
-          <View className='flex-row items-center gap-3 p-4 bg-green-50 border border-green-200 rounded-xl'>
-            <View className='w-10 h-10 bg-green-100 rounded-full items-center justify-center'>
-              <Ionicons name='checkmark-circle' size={20} color='#16a34a' />
-            </View>
-            <View>
-              <Text className='text-sm font-semibold text-green-900'>All caught up!</Text>
-              <Text className='text-xs text-green-700'>You've read all your notifications.</Text>
-            </View>
+      <Animated.View style={{ opacity: listOpacity, transform: [{ translateY: listTranslateY }] }}>
+        <View className='flex-row items-center justify-between mx-3 my-4'>
+          <View>
+            <Text className='text-2xl font-bold text-slate-900'>Notifications</Text>
+            <Text className='text-sm text-slate-500 mt-0.5'>
+              {unread} unread of {notifications.length} total
+            </Text>
           </View>
-        )}
-        {notifications.map((n) => {
-          const isRead = readIds.has(n.id)
-          const s = isRead ? readStyle : typeStyles[n.type]
-          return (
-            <Pressable
-              onPress={() => handlePress(n.id)}
-              key={n.id}
-              style={{ backgroundColor: s.bg, borderColor: s.border }}
-              className='border rounded-2xl p-4'>
-              <View className='flex-row items-center gap-3'>
-                <View className='w-[85%]'>
-                  <Text
-                    style={{ color: s.text }}
-                    className='text-sm font-semibold'>
-                    {n.message}
-                  </Text>
-                  <View className='flex-row items-center gap-1 mt-1.5'>
-                    <Ionicons name='calendar-outline' size={12} color='#94a3b8' />
-                    <Text className='text-xs text-slate-400 font-medium'>Due: {formatDate(n.dueDate)}</Text>
+          <Pressable
+            disabled={unread === 0}
+            onPress={markAllRead}
+            className='flex-row items-center gap-1.5 p-3 bg-blue-600 active:bg-blue-700 active:scale-[0.98] transition-all duration-150 rounded-xl disabled:opacity-50'>
+            <Ionicons name='checkmark-circle-outline' size={20} color='white' />
+            <Text className='text-white text-[15px] font-medium'>Mark all as read</Text>
+          </Pressable>
+        </View>
+        <View className='mx-3 gap-3'>
+          {unread === 0 && (
+            <View className='flex-row items-center gap-3 p-4 bg-green-50 border border-green-200 rounded-xl'>
+              <View className='w-10 h-10 bg-green-100 rounded-full items-center justify-center'>
+                <Ionicons name='checkmark-circle' size={20} color='#16a34a' />
+              </View>
+              <View>
+                <Text className='text-sm font-semibold text-green-900'>All caught up!</Text>
+                <Text className='text-xs text-green-700'>You've read all your notifications.</Text>
+              </View>
+            </View>
+          )}
+          {notifications.map((n) => {
+            const isRead = readIds.has(n.id)
+            const s = isRead ? readStyle : typeStyles[n.type]
+            return (
+              <Pressable
+                onPress={() => handlePress(n.id)}
+                key={n.id}
+                style={{ backgroundColor: s.bg, borderColor: s.border }}
+                className='border rounded-2xl p-4'>
+                <View className='flex-row items-center gap-3'>
+                  <View className='w-[85%]'>
+                    <Text
+                      style={{ color: s.text }}
+                      className='text-sm font-semibold'>
+                      {n.message}
+                    </Text>
+                    <View className='flex-row items-center gap-1 mt-1.5'>
+                      <Ionicons name='calendar-outline' size={12} color='#94a3b8' />
+                      <Text className='text-xs text-slate-400 font-medium'>Due: {formatDate(n.dueDate)}</Text>
+                    </View>
                   </View>
-                </View>
-                <View className='flex flex-col gap-1'>
-                  {/* {!isRead && (
+                  <View className='flex flex-col gap-1'>
+                    {/* {!isRead && (
                     <Pressable
                       onPress={() => handlePress(n.id)}
                       className='pb-2'>
                       <Ionicons name='checkmark-circle-outline' size={22} color='#94a3b8' />
                     </Pressable>
                   )} */}
-                  <Pressable
-                    onPress={() => handlePress(n.id, n.taskId)}>
-                    <Ionicons name='arrow-forward-circle-outline' size={25} color='#94a3b8' />
-                  </Pressable>
+                    <Pressable
+                      onPress={() => handlePress(n.id, n.taskId)}>
+                      <Ionicons name='arrow-forward-circle-outline' size={25} color='#94a3b8' />
+                    </Pressable>
+                  </View>
                 </View>
-              </View>
-            </Pressable>
-          )
-        })}
-      </View>
+              </Pressable>
+            )
+          })}
+        </View>
+      </Animated.View>
     </ScrollView>
   )
 }

@@ -92,12 +92,17 @@ export default function Profile() {
       }>
       <Animated.View
         style={{ opacity: cardOpacity, transform: [{ translateY: cardTranslateY }] }}
-        className='bg-white border border-slate-200 rounded-2xl overflow-hidden mx-3 mt-4 mb-4'>
-        <LinearGradient
-          colors={['#60A5FA', '#1D4ED8']}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-          className='h-28' />
+        className='bg-white border border-slate-200 rounded-2xl mx-3 mt-4 mb-4'>
+        <View className='overflow-hidden rounded-t-2xl'>
+          <LinearGradient
+            colors={['#60A5FA', '#1D4ED8']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={{
+              height: 112,
+              width: '100%'
+            }} />
+        </View>
         <View className='px-5 pb-5'>
           <View className='-mt-14 mb-4'>
             <View className='w-28 h-28 rounded-full bg-white border-4 border-white shadow-md items-center justify-center'>
