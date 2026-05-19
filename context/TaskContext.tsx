@@ -1,7 +1,7 @@
 import { API_URL } from '@/constants/api'
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { useAuth } from './AuthContext'
-type Task = {
+export type Task = {
     id: string
     title: string
     description: string
@@ -13,6 +13,7 @@ type Task = {
     submittedDate: string
     dueDate: string
     details: Record<string, string>
+    overdue?: boolean
 }
 type TaskContextType = {
     tasks: Task[]

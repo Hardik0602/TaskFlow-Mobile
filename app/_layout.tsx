@@ -1,4 +1,5 @@
 import { AuthProvider } from '@/context/AuthContext'
+import { TaskFilterProvider } from '@/context/FilterContext'
 import { NotificationProvider } from '@/context/NotificationContext'
 import { TaskProvider } from '@/context/TaskContext'
 import { Stack } from 'expo-router'
@@ -10,7 +11,9 @@ export default function RootLayout() {
       <AuthProvider>
         <TaskProvider>
           <NotificationProvider>
-            <Stack screenOptions={{ headerShown: false }} />
+            <TaskFilterProvider>
+              <Stack screenOptions={{ headerShown: false }} />
+            </TaskFilterProvider>
           </NotificationProvider>
         </TaskProvider>
       </AuthProvider>
