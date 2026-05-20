@@ -1,4 +1,5 @@
 import { Redirect } from 'expo-router'
+import { StatusBar } from 'expo-status-bar'
 import { Text, View } from 'react-native'
 import { useAuth } from '../context/AuthContext'
 export default function Index() {
@@ -6,6 +7,7 @@ export default function Index() {
   if (loading) {
     return (
       <View className='flex-1 items-center justify-center'>
+        <StatusBar style='dark' />
         <Text>loading</Text>
       </View>
     )

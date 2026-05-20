@@ -6,32 +6,12 @@ import { useEffect, useRef } from 'react'
 import { ActivityIndicator, Animated, Pressable, RefreshControl, ScrollView, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 type NotificationType = 'overdue' | 'dueSoon' | 'pending'
-const typeStyles: Record<NotificationType, {
-  bg: string
-  border: string
-  text: string
-}> = {
-  overdue: {
-    bg: '#fef2f2',
-    border: '#fecaca',
-    text: '#dc2626'
-  },
-  dueSoon: {
-    bg: '#fffbeb',
-    border: '#fde68a',
-    text: '#d97706'
-  },
-  pending: {
-    bg: '#eff6ff',
-    border: '#bfdbfe',
-    text: '#2563eb'
-  }
+const typeStyles: Record<NotificationType, { bg: string, border: string, text: string }> = {
+  overdue: { bg: '#fef2f2', border: '#fecaca', text: '#dc2626' },
+  dueSoon: { bg: '#fffbeb', border: '#fde68a', text: '#d97706' },
+  pending: { bg: '#eff6ff', border: '#bfdbfe', text: '#2563eb' }
 }
-const readStyle = {
-  bg: '#ffffff',
-  border: '#e2e8f0',
-  text: '#94a3b8'
-}
+const readStyle = { bg: '#ffffff', border: '#e2e8f0', text: '#94a3b8' }
 const formatDate = (dateString: string) => {
   const date = new Date(dateString)
   return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
@@ -42,14 +22,10 @@ export default function Notifications() {
   const { loading, loadTasks } = useTasks()
   const handlePress = (id: string, taskId?: string) => {
     markRead(id)
-    taskId && router.push({
-      pathname: '/[taskId]',
-      params: { taskId }
-    })
+    taskId && router.push(`/${taskId}`)
   }
   const listOpacity = useRef(new Animated.Value(0)).current
   const listTranslateY = useRef(new Animated.Value(12)).current
-
   useEffect(() => {
     if (loading) return
     listOpacity.setValue(0)
