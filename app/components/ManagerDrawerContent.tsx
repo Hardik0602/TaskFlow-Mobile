@@ -23,14 +23,14 @@ export default function ManagerDrawerContent(props: DrawerContentComponentProps)
             </DrawerContentScrollView>
             <View
                 style={{ paddingBottom: insets.bottom + 16 }}
-                className='flex-row items-center justify-between px-5 pt-4 border-t border-slate-100'>
-                <View className='flex-row items-center gap-2'>
+                className='flex-row items-center justify-between px-5 pt-4 border-t border-slate-100 gap-2'>
+                <View className='flex-1 flex-row items-center gap-2'>
                     <View className='w-8 h-8 bg-slate-200 rounded-full items-center justify-center'>
                         <Text className='text-xs font-semibold text-slate-600'>
                             {user?.name.charAt(0).toUpperCase()}
                         </Text>
                     </View>
-                    <Text className='text-sm font-medium text-slate-900'>{user?.name}</Text>
+                    <Text className='flex-1 text-sm font-medium text-slate-900' numberOfLines={1}>{user?.name}</Text>
                 </View>
                 <Pressable
                     onPress={handleLogout}

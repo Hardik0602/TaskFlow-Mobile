@@ -114,11 +114,11 @@ export default function Profile() {
           <View className='flex-row flex-wrap gap-y-4'>
             <View className='w-1/2 pr-3'>
               <Text className='text-xs font-bold text-slate-400 tracking-widest mb-1'>Full Name</Text>
-              <Text className='text-slate-900 font-medium text-sm'>{user?.name}</Text>
+              <Text className='text-slate-900 font-medium text-sm' numberOfLines={1}>{user?.name}</Text>
             </View>
             <View className='w-1/2'>
               <Text className='text-xs font-bold text-slate-400 tracking-widest mb-1'>Email</Text>
-              <Text className='text-slate-900 font-medium text-sm'>{user?.email}</Text>
+              <Text className='text-slate-900 font-medium text-sm' numberOfLines={1}>{user?.email}</Text>
             </View>
             <View className='w-1/2 pr-3'>
               <Text className='text-xs font-bold text-slate-400 tracking-widest mb-1'>Role</Text>
