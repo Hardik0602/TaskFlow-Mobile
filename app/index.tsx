@@ -1,14 +1,14 @@
 import { Redirect } from 'expo-router'
-import { StatusBar } from 'expo-status-bar'
-import { Text, View } from 'react-native'
+import { ActivityIndicator, View } from 'react-native'
 import { useAuth } from '../context/AuthContext'
 export default function Index() {
   const { user, loading } = useAuth()
   if (loading) {
     return (
-      <View className='flex-1 items-center justify-center'>
-        <StatusBar style='dark' />
-        <Text>loading</Text>
+      <View className='flex-1 bg-slate-50 justify-center'>
+        <ActivityIndicator
+          size={50}
+          color={'#60A5FA'} />
       </View>
     )
   }

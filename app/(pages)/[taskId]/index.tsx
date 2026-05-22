@@ -5,8 +5,8 @@ import { useTasks } from '@/context/TaskContext'
 import { Ionicons } from '@expo/vector-icons'
 import { Redirect, router, useLocalSearchParams } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
-import { useState } from 'react'
-import { ActivityIndicator, Alert, Platform, Pressable, RefreshControl, ScrollView, Text, View } from 'react-native'
+import { useEffect, useState } from 'react'
+import { ActivityIndicator, Alert, Keyboard, KeyboardAvoidingView, Platform, Pressable, RefreshControl, ScrollView, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Comments from '../../components/Comments'
 const priorityConfig = {
@@ -34,6 +34,7 @@ export default function TaskDetails() {
     const { tasks, loadTasks, loading } = useTasks()
     const { taskId } = useLocalSearchParams()
     const insets = useSafeAreaInsets()
+    const [flexToggle, setFlexToggle] = useState(false)
     const [actionLoading, setActionLoading] = useState(false)
     const task = tasks.find(t => t.id === taskId)
     if (!user) {
@@ -131,6 +132,18 @@ export default function TaskDetails() {
             }
         }
     }
+    useEffect(() => {
+        const keyboardShowListener = Keyboard.addListener('keyboardDidShow', () => {
+            setFlexToggle(false)
+        })
+        const keyboardHideListener = Keyboard.addListener('keyboardDidHide', () => {
+            setFlexToggle(true)
+        })
+        return () => {
+            keyboardShowListener.remove()
+            keyboardHideListener.remove()
+        }
+    }, [])
     if (loading || actionLoading) {
         return (
             <View className='flex-1 bg-slate-50 justify-center'>
@@ -141,151 +154,160 @@ export default function TaskDetails() {
         )
     }
     return (
-        <ScrollView
-            showsVerticalScrollIndicator={false}
-            className='flex-1 bg-slate-50'
-            contentInsetAdjustmentBehavior='automatic'
-            contentContainerStyle={{ paddingBottom: Platform.OS === 'android' ? insets.bottom + 16 : 0, paddingTop: Platform.OS === 'android' ? insets.top : 0 }}
-            refreshControl={
-                <RefreshControl
-                    refreshing={loading}
-                    onRefresh={loadTasks}
-                    progressViewOffset={Platform.OS === 'android' ? insets.top : 0} />
+        <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset={0}
+            style={
+                flexToggle
+                    ? { flexGrow: 1 }
+                    : { flex: 1 }
             }>
-            <View className='mx-3 gap-4 pt-4'>
-                <StatusBar style='dark' />
-                {isOverdue && (
-                    <View className='flex-row items-center justify-center gap-3 bg-red-600 px-5 py-3 -mb-4 rounded-t-2xl'>
-                        <Ionicons name='close-circle' size={20} color='white' />
-                        <Text className='text-white font-semibold text-base'>This task is overdue</Text>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                className='flex-1 bg-slate-50'
+                contentInsetAdjustmentBehavior='automatic'
+                contentContainerStyle={{ paddingBottom: Platform.OS === 'android' ? insets.bottom + 16 : 0, paddingTop: Platform.OS === 'android' ? insets.top : 0 }}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={loading}
+                        onRefresh={loadTasks}
+                        progressViewOffset={Platform.OS === 'android' ? insets.top : 0} />
+                }>
+                <View className='mx-3 gap-4 pt-4'>
+                    <StatusBar style='dark' />
+                    {isOverdue && (
+                        <View className='flex-row items-center justify-center gap-3 bg-red-600 px-5 py-3 -mb-4 rounded-t-2xl'>
+                            <Ionicons name='close-circle' size={20} color='white' />
+                            <Text className='text-white font-semibold text-base'>This task is overdue</Text>
+                        </View>
+                    )}
+                    <View className={`bg-white border border-slate-200 p-5 gap-3 ${isOverdue ? 'rounded-b-2xl' : 'rounded-2xl'}`}>
+                        <View className='flex-row gap-3 items-center justify-between'>
+                            <Text className='text-xl font-bold text-slate-900 flex-1'>{task.title}</Text>
+                            <View style={{ backgroundColor: s.bg }} className='px-2.5 py-1 rounded-md'>
+                                <Text style={{ color: s.text }} className='text-xs font-semibold'>
+                                    {isOverdue ? 'Overdue' : s.label}
+                                </Text>
+                            </View>
+                        </View>
+                        <Text className='text-sm text-slate-500'>{task.description}</Text>
                     </View>
-                )}
-                <View className={`bg-white border border-slate-200 p-5 gap-3 ${isOverdue ? 'rounded-b-2xl' : 'rounded-2xl'}`}>
-                    <View className='flex-row gap-3 items-center justify-between'>
-                        <Text className='text-xl font-bold text-slate-900 flex-1'>{task.title}</Text>
-                        <View style={{ backgroundColor: s.bg }} className='px-2.5 py-1 rounded-md'>
-                            <Text style={{ color: s.text }} className='text-xs font-semibold'>
-                                {isOverdue ? 'Overdue' : s.label}
-                            </Text>
-                        </View>
-                    </View>
-                    <Text className='text-sm text-slate-500'>{task.description}</Text>
-                </View>
-                <View className='bg-white border border-slate-200 rounded-2xl p-5 gap-8'>
-                    <View className='flex-row gap-4'>
-                        <View className='flex-1'>
-                            <Text className='text-xs font-semibold text-slate-400 tracking-widest mb-1.5'>Category</Text>
-                            <View className='flex-row items-center gap-1.5'>
-                                <Ionicons name='pricetag-outline' size={14} color='#94a3b8' />
-                                <Text className='text-sm font-medium text-slate-900'>{task.category}</Text>
-                            </View>
-                        </View>
-                        <View className='flex-1'>
-                            <Text className='text-xs font-semibold text-slate-400 tracking-widest mb-1.5'>Priority</Text>
-                            <View style={{ backgroundColor: p.bg, borderColor: p.border }} className='self-start flex-row items-center gap-1.5 px-2.5 py-1 rounded-md border'>
-                                <View style={{ backgroundColor: p.dot }} className='w-2 h-2 rounded-full' />
-                                <Text style={{ color: p.text }} className='text-xs font-medium capitalize'>{task.priority}</Text>
-                            </View>
-                        </View>
-                    </View>
-                    <View className='flex-row gap-4'>
-                        <View className='flex-1'>
-                            <Text className='text-xs font-semibold text-slate-400 tracking-widest mb-1.5'>Due Date</Text>
-                            <View className='flex-row items-center gap-1.5'>
-                                <Ionicons name='calendar-outline' size={14} color={isOverdue ? '#dc2626' : '#94a3b8'} />
-                                <Text style={{ color: isOverdue ? '#dc2626' : '#0f172a' }} className='text-sm font-medium'>{formatDate(task.dueDate)}</Text>
-                            </View>
-                        </View>
-                        <View className='flex-1'>
-                            <Text className='text-xs font-semibold text-slate-400 tracking-widest mb-1.5'>Submitted On</Text>
-                            <View className='flex-row items-center gap-1.5'>
-                                <Ionicons name='time-outline' size={14} color='#94a3b8' />
-                                <Text className='text-sm text-slate-500'>{formatDate(task.submittedDate)}</Text>
-                            </View>
-                        </View>
-                    </View>
-                    <View className='flex-row gap-4'>
-                        <View className='flex-1'>
-                            <Text className='text-xs font-semibold text-slate-400 tracking-widest mb-1.5'>Submitted By</Text>
-                            <View className='flex-row items-center gap-2'>
-                                <View className='w-8 h-8 bg-slate-200 rounded-full items-center justify-center'>
-                                    <Text className='text-xs font-semibold text-slate-600'>
-                                        {task.submittedBy.charAt(0).toUpperCase()}
-                                    </Text>
-                                </View>
-                                <Text className='text-sm font-medium text-slate-900'>{task.submittedBy}</Text>
-                            </View>
-                        </View>
-                        {user?.role !== 'admin' && (
+                    <View className='bg-white border border-slate-200 rounded-2xl p-5 gap-8'>
+                        <View className='flex-row gap-4'>
                             <View className='flex-1'>
-                                <Text className='text-xs font-semibold text-slate-400 tracking-widest mb-1.5'>Assigned To</Text>
+                                <Text className='text-xs font-semibold text-slate-400 tracking-widest mb-1.5'>Category</Text>
+                                <View className='flex-row items-center gap-1.5'>
+                                    <Ionicons name='pricetag-outline' size={14} color='#94a3b8' />
+                                    <Text className='text-sm font-medium text-slate-900'>{task.category}</Text>
+                                </View>
+                            </View>
+                            <View className='flex-1'>
+                                <Text className='text-xs font-semibold text-slate-400 tracking-widest mb-1.5'>Priority</Text>
+                                <View style={{ backgroundColor: p.bg, borderColor: p.border }} className='self-start flex-row items-center gap-1.5 px-2.5 py-1 rounded-md border'>
+                                    <View style={{ backgroundColor: p.dot }} className='w-2 h-2 rounded-full' />
+                                    <Text style={{ color: p.text }} className='text-xs font-medium capitalize'>{task.priority}</Text>
+                                </View>
+                            </View>
+                        </View>
+                        <View className='flex-row gap-4'>
+                            <View className='flex-1'>
+                                <Text className='text-xs font-semibold text-slate-400 tracking-widest mb-1.5'>Due Date</Text>
+                                <View className='flex-row items-center gap-1.5'>
+                                    <Ionicons name='calendar-outline' size={14} color={isOverdue ? '#dc2626' : '#94a3b8'} />
+                                    <Text style={{ color: isOverdue ? '#dc2626' : '#0f172a' }} className='text-sm font-medium'>{formatDate(task.dueDate)}</Text>
+                                </View>
+                            </View>
+                            <View className='flex-1'>
+                                <Text className='text-xs font-semibold text-slate-400 tracking-widest mb-1.5'>Submitted On</Text>
+                                <View className='flex-row items-center gap-1.5'>
+                                    <Ionicons name='time-outline' size={14} color='#94a3b8' />
+                                    <Text className='text-sm text-slate-500'>{formatDate(task.submittedDate)}</Text>
+                                </View>
+                            </View>
+                        </View>
+                        <View className='flex-row gap-4'>
+                            <View className='flex-1'>
+                                <Text className='text-xs font-semibold text-slate-400 tracking-widest mb-1.5'>Submitted By</Text>
                                 <View className='flex-row items-center gap-2'>
                                     <View className='w-8 h-8 bg-slate-200 rounded-full items-center justify-center'>
                                         <Text className='text-xs font-semibold text-slate-600'>
-                                            {task.assignedTo.charAt(0).toUpperCase()}
+                                            {task.submittedBy.charAt(0).toUpperCase()}
                                         </Text>
                                     </View>
-                                    <Text className='text-sm flex-1 font-medium text-slate-900' numberOfLines={1}>{users.find(u => u.email === task.assignedTo)?.name || task.assignedTo}</Text>
+                                    <Text className='text-sm font-medium text-slate-900'>{task.submittedBy}</Text>
                                 </View>
                             </View>
-                        )}
-                    </View>
-                </View>
-                {task.details && Object.keys(task.details).length > 0 && (
-                    <View className='bg-white border border-slate-200 rounded-2xl p-5 gap-4'>
-                        <Text className='text-sm font-semibold text-slate-900'>Additional Details</Text>
-                        <View className='gap-3'>
-                            {Object.entries(task.details).map(([key, value]) => (
-                                <View key={key} className='bg-slate-50 border border-slate-200 rounded-xl p-3'>
-                                    <Text className='text-xs font-medium text-slate-400 mb-1'>{key}</Text>
-                                    <Text className='text-sm font-medium text-slate-900'>{value}</Text>
+                            {user?.role === 'admin' && (
+                                <View className='flex-1'>
+                                    <Text className='text-xs font-semibold text-slate-400 tracking-widest mb-1.5'>Assigned To</Text>
+                                    <View className='flex-row items-center gap-2'>
+                                        <View className='w-8 h-8 bg-slate-200 rounded-full items-center justify-center'>
+                                            <Text className='text-xs font-semibold text-slate-600'>
+                                                {task.assignedTo.charAt(0).toUpperCase()}
+                                            </Text>
+                                        </View>
+                                        <Text className='text-sm flex-1 font-medium text-slate-900' numberOfLines={1}>{users.find(u => u.email === task.assignedTo)?.name || task.assignedTo}</Text>
+                                    </View>
                                 </View>
-                            ))}
+                            )}
                         </View>
                     </View>
-                )}
-                {(user?.role === 'manager' && !isDone) && (
-                    <View className='gap-3'>
-                        <Pressable
-                            onPress={() => confirmAction('approved')}
-                            className='flex-row items-center justify-center gap-2 py-3.5 bg-green-600 active:bg-green-700 rounded-2xl active:scale-[0.98] transition-all duration-150'>
-                            <Ionicons name='checkmark-circle-outline' size={20} color='white' />
-                            <Text className='text-white font-semibold'>Approve</Text>
-                        </Pressable>
-                        <Pressable
-                            onPress={() => confirmAction('in_progress')}
-                            className='flex-row items-center justify-center gap-2 py-3.5 bg-blue-600 active:bg-blue-700 rounded-2xl active:scale-[0.98] transition-all duration-150'>
-                            <Ionicons name='eye-outline' size={20} color='white' />
-                            <Text className='text-white font-semibold'>Mark for review</Text>
-                        </Pressable>
-                        <Pressable
-                            onPress={() => confirmAction('rejected')}
-                            className='flex-row items-center justify-center gap-2 py-3.5 bg-red-600 active:bg-red-700 rounded-2xl active:scale-[0.98] transition-all duration-150'>
-                            <Ionicons name='close-circle-outline' size={20} color='white' />
-                            <Text className='text-white font-semibold'>Reject</Text>
-                        </Pressable>
-                    </View>
-                )}
-                {user?.role === 'admin' && (
-                    <View className='gap-3'>
-                        {!isDone && (
+                    {task.details && Object.keys(task.details).length > 0 && (
+                        <View className='bg-white border border-slate-200 rounded-2xl p-5 gap-4'>
+                            <Text className='text-sm font-semibold text-slate-900'>Additional Details</Text>
+                            <View className='gap-3'>
+                                {Object.entries(task.details).map(([key, value]) => (
+                                    <View key={key} className='bg-slate-50 border border-slate-200 rounded-xl p-3'>
+                                        <Text className='text-xs font-medium text-slate-400 mb-1'>{key}</Text>
+                                        <Text className='text-sm font-medium text-slate-900'>{value}</Text>
+                                    </View>
+                                ))}
+                            </View>
+                        </View>
+                    )}
+                    {(user?.role === 'manager' && !isDone) && (
+                        <View className='gap-3'>
                             <Pressable
-                                onPress={() => router.push(`/${task.id}/edit`)}
-                                className='flex-row items-center justify-center gap-2 py-3.5 bg-blue-600 active:bg-blue-700 rounded-2xl active:scale-[0.98] transition-all duration-150'>
-                                <Ionicons name='create-outline' size={20} color='white' />
-                                <Text className='text-white font-semibold'>Edit</Text>
+                                onPress={() => confirmAction('approved')}
+                                className='flex-row items-center justify-center gap-2 py-3.5 bg-green-600 active:bg-green-700 rounded-2xl active:scale-[0.98] transition-all duration-150'>
+                                <Ionicons name='checkmark-circle-outline' size={20} color='white' />
+                                <Text className='text-white font-semibold'>Approve</Text>
                             </Pressable>
-                        )}
-                        <Pressable
-                            onPress={() => confirmAction('delete')}
-                            className='flex-row items-center justify-center gap-2 py-3.5 bg-red-600 active:bg-red-700 rounded-2xl active:scale-[0.98] transition-all duration-150'>
-                            <Ionicons name='trash-outline' size={20} color='white' />
-                            <Text className='text-white font-semibold'>Delete</Text>
-                        </Pressable>
-                    </View>
-                )}
-                <Comments />
-            </View>
-        </ScrollView>
+                            <Pressable
+                                onPress={() => confirmAction('in_progress')}
+                                className='flex-row items-center justify-center gap-2 py-3.5 bg-blue-600 active:bg-blue-700 rounded-2xl active:scale-[0.98] transition-all duration-150'>
+                                <Ionicons name='eye-outline' size={20} color='white' />
+                                <Text className='text-white font-semibold'>Mark for review</Text>
+                            </Pressable>
+                            <Pressable
+                                onPress={() => confirmAction('rejected')}
+                                className='flex-row items-center justify-center gap-2 py-3.5 bg-red-600 active:bg-red-700 rounded-2xl active:scale-[0.98] transition-all duration-150'>
+                                <Ionicons name='close-circle-outline' size={20} color='white' />
+                                <Text className='text-white font-semibold'>Reject</Text>
+                            </Pressable>
+                        </View>
+                    )}
+                    {user?.role === 'admin' && (
+                        <View className='gap-3'>
+                            {!isDone && (
+                                <Pressable
+                                    onPress={() => router.push(`/${task.id}/edit`)}
+                                    className='flex-row items-center justify-center gap-2 py-3.5 bg-blue-600 active:bg-blue-700 rounded-2xl active:scale-[0.98] transition-all duration-150'>
+                                    <Ionicons name='create-outline' size={20} color='white' />
+                                    <Text className='text-white font-semibold'>Edit</Text>
+                                </Pressable>
+                            )}
+                            <Pressable
+                                onPress={() => confirmAction('delete')}
+                                className='flex-row items-center justify-center gap-2 py-3.5 bg-red-600 active:bg-red-700 rounded-2xl active:scale-[0.98] transition-all duration-150'>
+                                <Ionicons name='trash-outline' size={20} color='white' />
+                                <Text className='text-white font-semibold'>Delete</Text>
+                            </Pressable>
+                        </View>
+                    )}
+                    <Comments />
+                </View>
+            </ScrollView>
+        </KeyboardAvoidingView>
     )
 }
