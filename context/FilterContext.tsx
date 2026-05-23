@@ -21,6 +21,7 @@ type FilterContextType = {
     assignedToList: AssignedToOption[]
     activeFiltersCount: number
     resetFilters: () => void
+    getUsers: () => Promise<void>
     users: User[]
 }
 type AssignedToOption = {
@@ -59,7 +60,7 @@ export function TaskFilterProvider({ children }: { children: React.ReactNode }) 
     }
     useEffect(() => {
         getUsers()
-    }, [tasks])
+    }, [])
     const effectiveTasks = useMemo(() => {
         return tasks.map(task => {
             const overdue = task.status === 'pending' && new Date(task.dueDate) < today
@@ -155,7 +156,7 @@ export function TaskFilterProvider({ children }: { children: React.ReactNode }) 
     const resetFilters = () => setFilters({ category: 'all', status: 'all', priority: 'all', assignedTo: 'all' })
     return (
         <FilterContext.Provider
-            value={{ filteredTasks, processedTasks, filters, setFilters, sortMode, setSortMode, categories, statuses, priorities, assignedToList, activeFiltersCount, resetFilters, users }}>
+            value={{ filteredTasks, processedTasks, filters, setFilters, sortMode, setSortMode, categories, statuses, priorities, assignedToList, activeFiltersCount, resetFilters, users, getUsers }}>
             {children}
         </FilterContext.Provider>
     )

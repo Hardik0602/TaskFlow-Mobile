@@ -8,11 +8,25 @@ import FilterPicker from '../components/FilterPicker'
 import TaskCard from '../components/TaskCard'
 export default function Tasks() {
   const insets = useSafeAreaInsets()
-  const { loading, loadTasks } = useTasks()
-  const { filters, setFilters, sortMode, setSortMode, processedTasks, categories, statuses, priorities, activeFiltersCount, resetFilters, assignedToList } = useTaskFilters()
+  const { loadTasks } = useTasks()
+  const { filters, setFilters, sortMode, setSortMode, processedTasks, categories, statuses, priorities, activeFiltersCount, resetFilters, assignedToList, getUsers } = useTaskFilters()
   const [showFilter, setShowFilter] = useState(false)
   const listOpacity = useRef(new Animated.Value(0)).current
   const listTranslateY = useRef(new Animated.Value(12)).current
+  const [loading, setLoading] = useState(false)
+  const handleRefresh = async () => {
+    setLoading(true)
+    try {
+      await Promise.all([
+        loadTasks(),
+        getUsers()
+      ])
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoading(false)
+    }
+  }
   useEffect(() => {
     if (loading) return
     listOpacity.setValue(0)
@@ -34,7 +48,7 @@ export default function Tasks() {
       showsVerticalScrollIndicator={false}
       className='flex-1 bg-slate-50'
       contentContainerStyle={{ paddingBottom: insets.bottom + 16 }}
-      refreshControl={<RefreshControl refreshing={loading} onRefresh={loadTasks} />}>
+      refreshControl={<RefreshControl refreshing={loading} onRefresh={handleRefresh} />}>
       <Animated.View style={{ opacity: listOpacity, transform: [{ translateY: listTranslateY }] }}>
         <View className='flex-row items-center justify-between mx-3 pt-4 pb-3'>
           <Text className='text-2xl font-bold text-slate-900'>Task Inbox</Text>

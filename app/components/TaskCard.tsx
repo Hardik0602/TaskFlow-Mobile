@@ -48,7 +48,7 @@ export default function TaskCard({ task, index }: { task: Task, index: number })
         <Animated.View style={{ opacity, transform: [{ translateY }] }}>
             <Pressable
                 onPress={() => router.push(`/${task.id}`)}
-                className={`bg-white rounded-2xl p-4 active:opacity-75 ${!task.overdue ? 'border-slate-200 border' : 'border-red-400 border-2'}`}>
+                className={`bg-white rounded-2xl p-4 ${!task.overdue ? 'border-slate-200 border' : 'border-red-400 border-2'}`}>
                 <View className='flex-row items-center justify-between mb-2'>
                     <View className='flex-1 pr-3'>
                         <Text className='text-sm font-semibold text-slate-900 mb-1.5' numberOfLines={1}>
@@ -87,9 +87,9 @@ export default function TaskCard({ task, index }: { task: Task, index: number })
                             </Text>
                         </View>
                         {user?.role === 'admin' && (
-                            <View className='flex-row items-center gap-1.5'>
+                            <View className='flex-1 flex-row items-center gap-1.5'>
                                 <Ionicons name='briefcase-outline' size={13} color='#94a3b8' />
-                                <Text className='text-xs text-slate-500 flex-1' numberOfLines={1}>{users.find(u => u.email === task.assignedTo)?.name || task.assignedTo}</Text>
+                                <Text className='text-xs text-slate-500' numberOfLines={1}>{users.find(u => u.email === task.assignedTo)?.name || task.assignedTo}</Text>
                             </View>
                         )}
                     </View>

@@ -30,13 +30,14 @@ const actionConfig: Record<Action, { title: string, message: string, color: stri
 }
 export default function TaskDetails() {
     const { user } = useAuth()
-    const { users } = useTaskFilters()
-    const { tasks, loadTasks, loading } = useTasks()
+    const { users, getUsers } = useTaskFilters()
+    const { tasks, loadTasks } = useTasks()
     const { taskId } = useLocalSearchParams()
     const insets = useSafeAreaInsets()
     const [flexToggle, setFlexToggle] = useState(false)
     const [actionLoading, setActionLoading] = useState(false)
     const task = tasks.find(t => t.id === taskId)
+    const [loading, setLoading] = useState(false)
     if (!user) {
         return <Redirect href='/login' />
     }
@@ -59,6 +60,19 @@ export default function TaskDetails() {
     const isDone = task.status !== 'pending'
     const p = priorityConfig[task.priority]
     const s = statusConfig[task.status]
+    const handleRefresh = async () => {
+        setLoading(true)
+        try {
+            await Promise.all([
+                loadTasks(),
+                getUsers()
+            ])
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setLoading(false)
+        }
+    }
     const updateStatus = async (newStatus: string, note?: string) => {
         setActionLoading(true)
         try {
@@ -170,7 +184,7 @@ export default function TaskDetails() {
                 refreshControl={
                     <RefreshControl
                         refreshing={loading}
-                        onRefresh={loadTasks}
+                        onRefresh={handleRefresh}
                         progressViewOffset={Platform.OS === 'android' ? insets.top : 0} />
                 }>
                 <View className='mx-3 gap-4 pt-4'>

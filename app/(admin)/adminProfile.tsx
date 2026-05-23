@@ -1,7 +1,8 @@
 import { useAuth } from '@/context/AuthContext'
+import { useTaskFilters } from '@/context/FilterContext'
 import { useTasks } from '@/context/TaskContext'
 import { LinearGradient } from 'expo-linear-gradient'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ActivityIndicator, Animated, RefreshControl, ScrollView, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 type PrivilegesCardProps = {
@@ -31,7 +32,9 @@ export default function AdminProfile() {
   const insets = useSafeAreaInsets()
   const active = false
   const { user } = useAuth()
-  const { loading, loadTasks } = useTasks()
+  const { loadTasks } = useTasks()
+  const { getUsers } = useTaskFilters()
+  const [loading, setLoading] = useState(false)
   const role = user && (user.role.charAt(0).toUpperCase() + user.role.slice(1))
   const initials = user?.name
     .split(' ')
@@ -51,6 +54,19 @@ export default function AdminProfile() {
       ]).start()
     }
   }, [loading])
+  const handleRefresh = async () => {
+    setLoading(true)
+    try {
+      await Promise.all([
+        loadTasks(),
+        getUsers()
+      ])
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoading(false)
+    }
+  }
   if (loading) {
     return (
       <View className='flex-1 bg-slate-50 justify-center'>
@@ -68,7 +84,7 @@ export default function AdminProfile() {
       refreshControl={
         <RefreshControl
           refreshing={loading}
-          onRefresh={loadTasks} />
+          onRefresh={handleRefresh} />
       }>
       <Animated.View
         style={{ opacity: cardOpacity, transform: [{ translateY: cardTranslateY }] }}
