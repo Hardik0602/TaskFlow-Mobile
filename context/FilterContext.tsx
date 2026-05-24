@@ -23,12 +23,13 @@ type FilterContextType = {
     resetFilters: () => void
     getUsers: () => Promise<void>
     users: User[]
+    loading: boolean
 }
 type AssignedToOption = {
     label: string
     value: string
 }
-type User = {
+export type User = {
     id: string
     name: string
     email: string
@@ -40,6 +41,7 @@ export function TaskFilterProvider({ children }: { children: React.ReactNode }) 
     const [users, setUsers] = useState<User[]>([])
     const today = new Date()
     const [sortMode, setSortMode] = useState<SortMode>('due')
+    const [loading, setLoading] = useState(true)
     const [filters, setFilters] = useState<Filters>({
         category: 'all',
         status: 'all',
@@ -47,6 +49,7 @@ export function TaskFilterProvider({ children }: { children: React.ReactNode }) 
         assignedTo: 'all'
     })
     const getUsers = async () => {
+        setLoading(true)
         try {
             const response = await fetch(`${API_URL}/users`)
             if (!response.ok) {
@@ -56,6 +59,8 @@ export function TaskFilterProvider({ children }: { children: React.ReactNode }) 
             setUsers(data)
         } catch (error) {
             throw error
+        } finally {
+            setLoading(false)
         }
     }
     useEffect(() => {
@@ -156,7 +161,7 @@ export function TaskFilterProvider({ children }: { children: React.ReactNode }) 
     const resetFilters = () => setFilters({ category: 'all', status: 'all', priority: 'all', assignedTo: 'all' })
     return (
         <FilterContext.Provider
-            value={{ filteredTasks, processedTasks, filters, setFilters, sortMode, setSortMode, categories, statuses, priorities, assignedToList, activeFiltersCount, resetFilters, users, getUsers }}>
+            value={{ filteredTasks, processedTasks, filters, setFilters, sortMode, setSortMode, categories, statuses, priorities, assignedToList, activeFiltersCount, resetFilters, users, getUsers, loading }}>
             {children}
         </FilterContext.Provider>
     )

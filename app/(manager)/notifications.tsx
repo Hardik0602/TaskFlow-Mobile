@@ -22,7 +22,7 @@ export default function Notifications() {
   const { loading, loadTasks } = useTasks()
   const handlePress = (id: string, taskId?: string) => {
     markRead(id)
-    taskId && router.push(`/${taskId}`)
+    taskId && router.push(`/task/${taskId}`)
   }
   const listOpacity = useRef(new Animated.Value(0)).current
   const listTranslateY = useRef(new Animated.Value(12)).current

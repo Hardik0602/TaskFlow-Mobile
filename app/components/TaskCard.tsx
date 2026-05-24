@@ -47,7 +47,7 @@ export default function TaskCard({ task, index }: { task: Task, index: number })
     return (
         <Animated.View style={{ opacity, transform: [{ translateY }] }}>
             <Pressable
-                onPress={() => router.push(`/${task.id}`)}
+                onPress={() => router.push(`/task/${task.id}`)}
                 className={`bg-white rounded-2xl p-4 ${!task.overdue ? 'border-slate-200 border' : 'border-red-400 border-2'}`}>
                 <View className='flex-row items-center justify-between mb-2'>
                     <View className='flex-1 pr-3'>

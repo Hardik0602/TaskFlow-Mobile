@@ -1,3 +1,4 @@
+import Comments from '@/app/components/Comments'
 import { API_URL } from '@/constants/api'
 import { useAuth } from '@/context/AuthContext'
 import { useTaskFilters } from '@/context/FilterContext'
@@ -8,7 +9,6 @@ import { StatusBar } from 'expo-status-bar'
 import { useEffect, useState } from 'react'
 import { ActivityIndicator, Alert, Keyboard, KeyboardAvoidingView, Platform, Pressable, RefreshControl, ScrollView, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import Comments from '../../components/Comments'
 const priorityConfig = {
     high: { bg: '#fef2f2', text: '#b91c1c', border: '#fecaca', dot: '#ef4444' },
     medium: { bg: '#fffbeb', text: '#92400e', border: '#fde68a', dot: '#f59e0b' },
@@ -305,7 +305,7 @@ export default function TaskDetails() {
                         <View className='gap-3'>
                             {!isDone && (
                                 <Pressable
-                                    onPress={() => router.push(`/${task.id}/edit`)}
+                                    onPress={() => router.push(`/task/${task.id}/edit`)}
                                     className='flex-row items-center justify-center gap-2 py-3.5 bg-blue-600 active:bg-blue-700 rounded-2xl active:scale-[0.98] transition-all duration-150'>
                                     <Ionicons name='create-outline' size={20} color='white' />
                                     <Text className='text-white font-semibold'>Edit</Text>
