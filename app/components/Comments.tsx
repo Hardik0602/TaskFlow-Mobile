@@ -3,7 +3,7 @@ import { useAuth } from '@/context/AuthContext'
 import { Ionicons } from '@expo/vector-icons'
 import { useLocalSearchParams } from 'expo-router'
 import { useEffect, useState } from 'react'
-import { ActivityIndicator, Keyboard, Pressable, Text, TextInput, View } from 'react-native'
+import { ActivityIndicator, Alert, Keyboard, Pressable, Text, TextInput, View } from 'react-native'
 type Comment = {
     id: string
     taskId: string
@@ -39,7 +39,13 @@ export default function Comments() {
             const data = await res.json()
             setComments(data)
         } catch (error) {
-            console.log(error)
+            Alert.alert(
+                'Error',
+                error instanceof Error
+                    ? error.message
+                    : 'Something went wrong',
+                [{ text: 'Ok' }]
+            )
         } finally {
             setLoading(false)
         }
@@ -65,7 +71,11 @@ export default function Comments() {
             setText('')
             loadComments()
         } catch {
-            console.log('Something went wrong')
+            Alert.alert(
+                'Error',
+                'Something went wrong',
+                [{ text: 'Ok' }]
+            )
         } finally {
             setSubmitting(false)
         }

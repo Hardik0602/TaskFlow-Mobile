@@ -3,7 +3,7 @@ import Checkbox from 'expo-checkbox'
 import { router } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { useState } from 'react'
-import { ActivityIndicator, Keyboard, Pressable, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native'
+import { ActivityIndicator, Alert, Keyboard, Pressable, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native'
 import { useAuth } from '../../context/AuthContext'
 export default function LoginScreen() {
     const { login, loading } = useAuth()
@@ -13,14 +13,24 @@ export default function LoginScreen() {
     const [showPassword, setShowPassword] = useState(false)
     const handleLogin = async () => {
         if (email.trim() === '' || password.trim() === '' || !email.includes('@')) {
-            console.log('Fill all necessary fields')
+            Alert.alert(
+                'Error',
+                'Fill all necessary fields',
+                [{ text: 'Ok' }]
+            )
             return
         }
         try {
             await login(email, password, rememberMe)
             router.replace('/')
         } catch (error) {
-            console.log(error)
+            Alert.alert(
+                'Error',
+                error instanceof Error
+                    ? error.message
+                    : 'Something went wrong',
+                [{ text: 'Ok' }]
+            )
         }
     }
     return (
@@ -35,6 +45,7 @@ export default function LoginScreen() {
                     <TextInput
                         placeholder='name@company.com'
                         keyboardType='email-address'
+                        autoCorrect={false}
                         autoCapitalize='none'
                         value={email}
                         onChangeText={setEmail}
@@ -47,6 +58,8 @@ export default function LoginScreen() {
                     <View className='relative'>
                         <TextInput
                             placeholder='Enter your password'
+                            autoCapitalize='none'
+                            autoCorrect={false}
                             secureTextEntry={!showPassword}
                             value={password}
                             onChangeText={setPassword}

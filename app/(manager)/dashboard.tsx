@@ -55,19 +55,19 @@ export default function Dashboard() {
         style={{ opacity: sectionOpacity, transform: [{ translateY: sectionTranslateY }] }}
         className='bg-white border border-slate-200 rounded-2xl p-5 gap-3 mx-3'>
         <Text className='text-base font-semibold text-slate-900'>Quick Insights</Text>
-        <View className='flex-row items-center gap-3 p-3 bg-amber-50 border border-amber-200 rounded-xl'>
-          <Ionicons name='warning-outline' size={28} color='#d97706' />
+        <View className='flex-row items-center justify-between p-3 bg-amber-50 border border-amber-200 rounded-xl'>
           <View>
             <Text className='text-sm font-semibold text-amber-900'>Due Soon</Text>
             <Text className='text-xs text-amber-700 mt-0.5'>{dueSoon} task{dueSoon !== 1 && 's'} due within the next 3 days</Text>
           </View>
+          <Ionicons name='warning-outline' size={28} color='#d97706' />
         </View>
-        <View className='flex-row items-center gap-3 p-3 bg-blue-50 border border-blue-200 rounded-xl'>
-          <Ionicons name='calendar-outline' size={28} color='#2563eb' />
+        <View className='flex-row items-center justify-between p-3 bg-blue-50 border border-blue-200 rounded-xl'>
           <View>
             <Text className='text-sm font-semibold text-blue-900'>Completion Rate</Text>
             <Text className='text-xs text-blue-700 mt-0.5'>{completionRate}% of all tasks completed</Text>
           </View>
+          <Ionicons name='calendar-outline' size={28} color='#2563eb' />
         </View>
       </Animated.View>
     </ScrollView>

@@ -3,7 +3,7 @@ import { useTaskFilters } from '@/context/FilterContext'
 import { useTasks } from '@/context/TaskContext'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useEffect, useRef, useState } from 'react'
-import { ActivityIndicator, Animated, RefreshControl, ScrollView, Text, View } from 'react-native'
+import { ActivityIndicator, Alert, Animated, RefreshControl, ScrollView, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 type PrivilegesCardProps = {
   title: string
@@ -62,7 +62,13 @@ export default function AdminProfile() {
         getUsers()
       ])
     } catch (error) {
-      console.log(error)
+      Alert.alert(
+        'Error',
+        error instanceof Error
+          ? error.message
+          : 'Something went wrong',
+        [{ text: 'Ok' }]
+      )
     } finally {
       setLoading(false)
     }

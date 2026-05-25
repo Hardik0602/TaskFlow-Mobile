@@ -11,7 +11,7 @@ const priorityConfig = {
     medium: { bg: '#fffbeb', text: '#92400e', border: '#fde68a', dot: '#f59e0b' },
     low: { bg: '#eff6ff', text: '#1e40af', border: '#bfdbfe', dot: '#3b82f6' }
 }
-const statusConfig: Record<string, { bg: string; text: string; label: string }> = {
+const statusConfig: Record<string, { bg: string, text: string, label: string }> = {
     pending: { bg: '#f1f5f9', text: '#475569', label: 'Pending' },
     in_progress: { bg: '#dbeafe', text: '#1d4ed8', label: 'In Progress' },
     approved: { bg: '#dcfce7', text: '#15803d', label: 'Approved' },

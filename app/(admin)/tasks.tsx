@@ -2,7 +2,7 @@ import { useTaskFilters } from '@/context/FilterContext'
 import { useTasks } from '@/context/TaskContext'
 import { Ionicons } from '@expo/vector-icons'
 import { useEffect, useRef, useState } from 'react'
-import { ActivityIndicator, Animated, Platform, Pressable, RefreshControl, ScrollView, Text, View } from 'react-native'
+import { ActivityIndicator, Alert, Animated, Platform, Pressable, RefreshControl, ScrollView, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import FilterPicker from '../components/FilterPicker'
 import TaskCard from '../components/TaskCard'
@@ -16,13 +16,20 @@ export default function Tasks() {
   const [loading, setLoading] = useState(false)
   const handleRefresh = async () => {
     setLoading(true)
+    setShowFilter(false)
     try {
       await Promise.all([
         loadTasks(),
         getUsers()
       ])
     } catch (error) {
-      console.log(error)
+      Alert.alert(
+        'Error',
+        error instanceof Error
+          ? error.message
+          : 'Something went wrong',
+        [{ text: 'Ok' }]
+      )
     } finally {
       setLoading(false)
     }
@@ -54,12 +61,22 @@ export default function Tasks() {
           <Text className='text-2xl font-bold text-slate-900'>Task Inbox</Text>
           <Pressable
             onPress={() => setShowFilter(!showFilter)}
-            className='flex-row items-center gap-1.5 p-2.5 bg-blue-600 active:bg-blue-700 active:scale-[0.98] transition-all duration-150 rounded-xl'>
+            className='flex-row items-center gap-1.5 p-2.5 bg-blue-500 active:bg-blue-600 active:scale-[0.98] transition-all duration-150 rounded-xl'>
             <Text className='text-white text-md font-medium'>{showFilter ? 'Hide' : 'Show'} filters</Text>
           </Pressable>
         </View>
-        {showFilter && <View className={`mx-3 mb-2 bg-white border border-slate-200 rounded-2xl p-3 gap-2 ${Platform.OS === 'ios' ? 'flex-row' : 'flex-col'}`}>
-          <View className={`gap-2 ${Platform.OS === 'ios' ? 'flex-1' : ''}`}>
+        {showFilter && <View className='mx-3 mb-2 bg-white border border-slate-200 rounded-2xl p-3 gap-2'>
+          <View className={`${Platform.OS === 'ios' ? 'flex-row' : ''}`}>
+            <FilterPicker
+              label='All Managers'
+              value={filters.assignedTo}
+              items={assignedToList.map(p => ({
+                label: p.label,
+                value: p.value
+              }))}
+              onChange={v => setFilters({ ...filters, assignedTo: v })} />
+          </View>
+          <View className={`gap-2 ${Platform.OS === 'ios' ? 'flex-row' : ''}`}>
             <FilterPicker
               value={sortMode}
               items={[
@@ -73,7 +90,7 @@ export default function Tasks() {
               items={categories.map(c => ({ label: c, value: c }))}
               onChange={v => setFilters({ ...filters, category: v })} />
           </View>
-          <View className={`gap-2 ${Platform.OS === 'ios' ? 'flex-1' : ''}`}>
+          <View className={`gap-2 ${Platform.OS === 'ios' ? 'flex-row' : ''}`}>
             <FilterPicker
               label='All Statuses'
               value={filters.status}
@@ -90,14 +107,6 @@ export default function Tasks() {
                 value: p
               }))}
               onChange={v => setFilters({ ...filters, priority: v })} />
-            <FilterPicker
-              label='All Managers'
-              value={filters.assignedTo}
-              items={assignedToList.map(p => ({
-                label: p.label,
-                value: p.value
-              }))}
-              onChange={v => setFilters({ ...filters, assignedTo: v })} />
           </View>
         </View>}
         {(showFilter && activeFiltersCount > 0) && (

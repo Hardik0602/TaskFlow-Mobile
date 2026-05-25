@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { useEffect, useRef } from 'react'
 import { Animated, Text, View } from 'react-native'
 type Color = 'purple' | 'amber' | 'red' | 'blue' | 'green'
-const colorMap: Record<Color, { bg: string; icon: string; text: string; border: string }> = {
+const colorMap: Record<Color, { bg: string, icon: string, text: string, border: string }> = {
     purple: { bg: '#faf5ff', icon: '#7c3aed', text: '#6d28d9', border: '#e9d5ff' },
     amber: { bg: '#fffbeb', icon: '#d97706', text: '#b45309', border: '#fde68a' },
     red: { bg: '#fef2f2', icon: '#dc2626', text: '#b91c1c', border: '#fecaca' },

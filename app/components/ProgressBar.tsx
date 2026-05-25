@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react"
-import { Animated, Text, View } from "react-native"
+import { useEffect, useRef } from 'react'
+import { Animated, Text, View } from 'react-native'
 type ProgressBarProps = {
     label: string
     value: number

@@ -140,7 +140,7 @@ export default function Notifications() {
                   )} */}
                     <Pressable
                       onPress={() => handlePress(n.id, n.taskId)}>
-                      <Ionicons name='arrow-forward-circle-outline' size={25} color='#94a3b8' />
+                      <Ionicons name='arrow-forward-circle-outline' size={25} color={s.text} />
                     </Pressable>
                   </View>
                 </View>
