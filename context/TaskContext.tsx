@@ -28,6 +28,8 @@ type TaskContextType = {
     mediumPriority: number
     lowPriority: number
     dueSoon: number
+    PRIORITY_OPTIONS: string[]
+    CATEGORY_OPTIONS: string[]
 }
 const TaskContext = createContext<TaskContextType>(
     {} as TaskContextType
@@ -106,9 +108,18 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
             task => task.status === 'pending' && new Date(task.dueDate) >= today && new Date(task.dueDate) <= threeDays
         ).length
     }, [tasks])
+    const CATEGORY_OPTIONS = [
+        'Expense Approval',
+        'Document Review',
+        'Leave Request',
+        'Finance',
+        'Access Request',
+        'IT Support'
+    ]
+    const PRIORITY_OPTIONS = ['low', 'medium', 'high']
     return (
         <TaskContext.Provider
-            value={{ tasks, loading, loadTasks, totalTasks, completedTasks, completionRate, overdueTasks, pendingTasks, highPriority, mediumPriority, lowPriority, dueSoon }}>
+            value={{ tasks, loading, loadTasks, totalTasks, completedTasks, completionRate, overdueTasks, pendingTasks, highPriority, mediumPriority, lowPriority, dueSoon, CATEGORY_OPTIONS, PRIORITY_OPTIONS }}>
             {children}
         </TaskContext.Provider>
     )

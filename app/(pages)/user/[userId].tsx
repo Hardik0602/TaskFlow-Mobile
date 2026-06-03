@@ -4,20 +4,11 @@ import { useAuth } from '@/context/AuthContext'
 import { useTaskFilters } from '@/context/FilterContext'
 import { useTasks } from '@/context/TaskContext'
 import { Ionicons } from '@expo/vector-icons'
-import DateTimePicker from '@react-native-community/datetimepicker'
 import { Redirect, router, useLocalSearchParams } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { ActivityIndicator, Alert, Keyboard, KeyboardAvoidingView, Platform, Pressable, RefreshControl, ScrollView, Text, TextInput, View } from 'react-native'
+import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-const CATEGORY_OPTIONS = [
-    'Expense Approval',
-    'Document Review',
-    'Leave Request',
-    'Finance',
-    'Access Request',
-    'IT Support'
-]
-const PRIORITY_OPTIONS = ['low', 'medium', 'high']
 const formatDate = (date: Date) => date.toISOString().split('T')[0]
 function FieldLabel({ label, optional }: { label: string; optional?: boolean }) {
     return (
@@ -51,20 +42,28 @@ function DateField({ label, value, onChange, minDate, maxDate }: { label: string
                 onPress={() => setShow(true)}
                 className='border border-slate-200 rounded-xl p-3.5 bg-white flex-row items-center gap-2'>
                 <Ionicons name='calendar-outline' size={16} color='#94a3b8' />
-                <Text style={{ fontSize: 14, color: value ? '#0f172a' : '#94a3b8' }}>
+                <Text
+                    style={{
+                        fontSize: 14,
+                        color: value ? '#0f172a' : '#94a3b8',
+                    }}>
                     {value ? formatDate(value) : 'Select date'}
                 </Text>
             </Pressable>
             {show && (
-                <DateTimePicker
-                    value={value ?? new Date()}
+                <DateTimePickerModal
+                    isVisible={show}
                     mode='date'
                     minimumDate={minDate}
                     maximumDate={maxDate}
-                    onChange={(_, date) => {
-                        setShow(Platform.OS === 'ios')
-                        if (date) onChange(date)
-                    }} />
+                    date={value ?? new Date()}
+                    onConfirm={(date) => {
+                        const selected = minDate && date < minDate ? minDate : date
+                        onChange(selected)
+                        setShow(false)
+                    }}
+                    modalStyleIOS={{ marginBottom: 35 }}
+                    onCancel={() => setShow(false)} />
             )}
         </View>
     )
@@ -74,7 +73,7 @@ export default function TaskAssign() {
     const { userId } = useLocalSearchParams()
     const { users } = useTaskFilters()
     const { user } = useAuth()
-    const { loadTasks } = useTasks()
+    const { loadTasks, CATEGORY_OPTIONS, PRIORITY_OPTIONS } = useTasks()
     if (!user) {
         return <Redirect href='/login' />
     }
