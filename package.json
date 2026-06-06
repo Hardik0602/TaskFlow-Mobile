@@ -7,7 +7,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "server": "json-server --watch db.json --host 0.0.0.0 --port 3000"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
@@ -32,6 +33,7 @@
     "expo-symbols": "~1.0.8",
     "expo-system-ui": "~6.0.9",
     "expo-web-browser": "~15.0.10",
+    "json-server": "^1.0.0-beta.15",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-native": "0.81.5",

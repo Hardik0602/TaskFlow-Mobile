@@ -1,7 +1,8 @@
 import { API_URL } from '@/constants/api'
+import { useAuth } from '@/context/AuthContext'
 import { useTaskFilters } from '@/context/FilterContext'
 import { Ionicons } from '@expo/vector-icons'
-import { router } from 'expo-router'
+import { Redirect, router } from 'expo-router'
 import { useState } from 'react'
 import { ActivityIndicator, Alert, Platform, Pressable, RefreshControl, ScrollView, Text, TextInput, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -21,6 +22,13 @@ export default function AddUser() {
     const [role, setRole] = useState<'manager' | 'admin'>('manager')
     const [showPassword, setShowPassword] = useState(false)
     const [submitting, setSubmitting] = useState(false)
+    const { user } = useAuth()
+    if (!user) {
+        return <Redirect href='/login' />
+    }
+    if (user.role !== 'admin') {
+        return <Redirect href='/' />
+    }
     const handleSubmit = async () => {
         if (!name.trim() || !email.includes('@') || !password.trim()) {
             Alert.alert('Missing Fields', 'Please fill all required fields')

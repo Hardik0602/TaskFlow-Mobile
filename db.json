@@ -1,0 +1,534 @@
+{
+  "users": [
+    {
+      "email": "john.doe@company.com",
+      "password": "password123",
+      "name": "John Doe",
+      "role": "manager",
+      "id": "7fbe"
+    },
+    {
+      "email": "jane.smith@company.com",
+      "password": "password123",
+      "name": "Jane Smith",
+      "role": "manager",
+      "id": "9ba4"
+    },
+    {
+      "email": "admin@company.com",
+      "password": "password123",
+      "name": "Company Admin",
+      "role": "admin",
+      "id": "5b40"
+    },
+    {
+      "email": "adminJr@company.com",
+      "password": "password123",
+      "name": "Jr Admin",
+      "role": "admin",
+      "id": "3ed7"
+    }
+  ],
+  "tasks": [
+    {
+      "title": "Expense Approval - Client Visit",
+      "description": "Travel and logistics expense claim for the recent onsite client engagement.",
+      "category": "Expense Approval",
+      "status": "approved",
+      "priority": "medium",
+      "assignedTo": "john.doe@company.com",
+      "submittedBy": "Aarav Mehta",
+      "submittedDate": "2025-01-05",
+      "dueDate": "2025-01-07",
+      "details": {
+        "amount": "14500",
+        "currency": "INR",
+        "purpose": "Client Engagement",
+        "dates": "Jan 03-04, 2025"
+      },
+      "id": "a662"
+    },
+    {
+      "title": "Expense Approval - Cab Reimbursement",
+      "description": "Local commute reimbursement for late-night office shift.",
+      "category": "Expense Approval",
+      "status": "pending",
+      "priority": "high",
+      "assignedTo": "john.doe@company.com",
+      "submittedBy": "Priya Singh",
+      "submittedDate": "2025-02-01",
+      "dueDate": "2025-02-04",
+      "details": {
+        "amount": "1800",
+        "currency": "INR",
+        "purpose": "Late Night Commute",
+        "dates": "Jan 31, 2025"
+      },
+      "id": "86ab"
+    },
+    {
+      "title": "Expense Approval - Conference Travel",
+      "description": "Airfare and registration fees for the upcoming Tech Summit.",
+      "category": "Expense Approval",
+      "status": "pending",
+      "priority": "low",
+      "assignedTo": "john.doe@company.com",
+      "submittedBy": "Vikram Seth",
+      "submittedDate": "2027-03-10",
+      "dueDate": "2027-03-15",
+      "details": {},
+      "id": "318a"
+    },
+    {
+      "title": "Expense Approval - Hotel Stay",
+      "description": "Accommodation charges for the regional strategy meeting.",
+      "category": "Expense Approval",
+      "status": "pending",
+      "priority": "medium",
+      "assignedTo": "john.doe@company.com",
+      "submittedBy": "Sanya Malhotra",
+      "submittedDate": "2027-04-08",
+      "dueDate": "2027-04-14",
+      "details": {
+        "amount": "21000",
+        "currency": "INR",
+        "purpose": "Strategy Workshop",
+        "dates": "Apr 05-07, 2027"
+      },
+      "id": "9139"
+    },
+    {
+      "title": "Expense Approval - Meal Allowance",
+      "description": "Daily meal stipends for the field research team.",
+      "category": "Expense Approval",
+      "status": "pending",
+      "priority": "high",
+      "assignedTo": "john.doe@company.com",
+      "submittedBy": "Rahul Sharma",
+      "submittedDate": "2027-05-01",
+      "dueDate": "2027-05-06",
+      "details": {
+        "amount": "3200",
+        "currency": "INR",
+        "purpose": "Field Research",
+        "dates": "Apr 28-30, 2027"
+      },
+      "id": "90ab"
+    },
+    {
+      "title": "Document Review - Sales Report",
+      "description": "Comprehensive review of Q4 sales figures and performance metrics.",
+      "category": "Document Review",
+      "status": "in_progress",
+      "priority": "high",
+      "assignedTo": "john.doe@company.com",
+      "submittedBy": "Neha Gupta",
+      "submittedDate": "2025-01-10",
+      "dueDate": "2025-01-12",
+      "details": {
+        "pages": "14",
+        "type": "Quarterly Report",
+        "department": "Sales"
+      },
+      "id": "808d"
+    },
+    {
+      "title": "Document Review - Marketing Plan",
+      "description": "Feedback required on the proposed digital marketing roadmap.",
+      "category": "Document Review",
+      "status": "pending",
+      "priority": "low",
+      "assignedTo": "john.doe@company.com",
+      "submittedBy": "Arjun Rao",
+      "submittedDate": "2025-02-05",
+      "dueDate": "2025-02-07",
+      "details": {
+        "pages": "9",
+        "type": "Project Proposal",
+        "department": "Marketing"
+      },
+      "id": "7723"
+    },
+    {
+      "title": "Document Review - Strategy Deck",
+      "description": "Final review of the 2027 vision slides for the Board meeting.",
+      "category": "Document Review",
+      "status": "pending",
+      "priority": "low",
+      "assignedTo": "john.doe@company.com",
+      "submittedBy": "Kiran Bedi",
+      "submittedDate": "2027-03-03",
+      "dueDate": "2027-03-10",
+      "details": {
+        "pages": "28",
+        "type": "Presentation",
+        "department": "Corporate Strategy"
+      },
+      "id": "6d4f"
+    },
+    {
+      "title": "Document Review - HR Policy Update",
+      "description": "Review of the revised remote work and inclusive hiring policies.",
+      "category": "Document Review",
+      "status": "pending",
+      "priority": "medium",
+      "assignedTo": "john.doe@company.com",
+      "submittedBy": "Anjali Verma",
+      "submittedDate": "2027-05-02",
+      "dueDate": "2027-05-09",
+      "details": {
+        "pages": "22",
+        "type": "Policy Manual",
+        "department": "Human Resources"
+      },
+      "id": "cc82"
+    },
+    {
+      "title": "Document Review - Compliance Checklist",
+      "description": "Verification of statutory compliance items for the upcoming audit.",
+      "category": "Document Review",
+      "status": "pending",
+      "priority": "high",
+      "assignedTo": "john.doe@company.com",
+      "submittedBy": "Suresh Raina",
+      "submittedDate": "2027-06-12",
+      "dueDate": "2027-06-20",
+      "details": {
+        "pages": "7",
+        "type": "Checklist",
+        "department": "Legal"
+      },
+      "id": "0b16"
+    },
+    {
+      "title": "Leave Request - Sick Leave",
+      "description": "One-day medical leave application due to viral fever.",
+      "category": "Leave Request",
+      "status": "approved",
+      "priority": "medium",
+      "assignedTo": "john.doe@company.com",
+      "submittedBy": "Rohan Das",
+      "submittedDate": "2025-01-02",
+      "dueDate": "2025-01-02",
+      "details": {
+        "days": "1",
+        "reason": "Medical",
+        "dates": "Jan 02, 2025"
+      },
+      "id": "60e5"
+    },
+    {
+      "title": "Leave Request - Casual Leave",
+      "description": "Short leave for attending to personal family matters.",
+      "category": "Leave Request",
+      "status": "pending",
+      "priority": "medium",
+      "assignedTo": "john.doe@company.com",
+      "submittedBy": "Ishita Bhalla",
+      "submittedDate": "2025-02-01",
+      "dueDate": "2025-02-03",
+      "details": {
+        "days": "2",
+        "reason": "Personal",
+        "dates": "Feb 02-03, 2025"
+      },
+      "id": "6db3"
+    },
+    {
+      "title": "Leave Request - Vacation",
+      "description": "Planned annual leave for an international trip.",
+      "category": "Leave Request",
+      "status": "pending",
+      "priority": "low",
+      "assignedTo": "john.doe@company.com",
+      "submittedBy": "Sameer Khan",
+      "submittedDate": "2027-03-14",
+      "dueDate": "2027-03-20",
+      "details": {
+        "days": "5",
+        "reason": "Travel",
+        "dates": "Mar 15-19, 2027"
+      },
+      "id": "d48d"
+    },
+    {
+      "title": "Leave Request - Family Function",
+      "description": "Request for time off to attend a sibling's wedding ceremony.",
+      "category": "Leave Request",
+      "status": "pending",
+      "priority": "medium",
+      "assignedTo": "john.doe@company.com",
+      "submittedBy": "Meera Joshi",
+      "submittedDate": "2027-05-04",
+      "dueDate": "2027-05-07",
+      "details": {
+        "days": "3",
+        "reason": "Family Wedding",
+        "dates": "May 05-07, 2027"
+      },
+      "id": "3fcc"
+    },
+    {
+      "title": "Leave Request - Personal Day",
+      "description": "Urgent request for a personal day for household maintenance.",
+      "category": "Leave Request",
+      "status": "pending",
+      "priority": "high",
+      "assignedTo": "john.doe@company.com",
+      "submittedBy": "Amit Shah",
+      "submittedDate": "2027-06-10",
+      "dueDate": "2027-06-11",
+      "details": {
+        "days": "1",
+        "reason": "Home Maintenance",
+        "dates": "Jun 10, 2027"
+      },
+      "id": "b862"
+    },
+    {
+      "title": "Vendor Invoice Approval",
+      "description": "High-value invoice from IT infrastructure partner for server maintenance.",
+      "category": "Finance",
+      "status": "rejected",
+      "priority": "high",
+      "assignedTo": "john.doe@company.com",
+      "submittedBy": "Kunal Kapoor",
+      "submittedDate": "2025-01-06",
+      "dueDate": "2025-01-07",
+      "details": {
+        "amount": "85000",
+        "currency": "INR",
+        "vendor": "NetSolutions Ltd"
+      },
+      "id": "af7b"
+    },
+    {
+      "title": "Reimbursement Processing",
+      "description": "Processing of multiple small-scale utility reimbursements.",
+      "category": "Finance",
+      "status": "pending",
+      "priority": "low",
+      "assignedTo": "john.doe@company.com",
+      "submittedBy": "Zoya Akhtar",
+      "submittedDate": "2025-02-02",
+      "dueDate": "2025-02-04",
+      "details": {
+        "amount": "6400",
+        "currency": "INR",
+        "count": "5"
+      },
+      "id": "5b2a"
+    },
+    {
+      "title": "Quarterly Budget Allocation",
+      "description": "Review of the proposed operational budget for the second quarter.",
+      "category": "Finance",
+      "status": "pending",
+      "priority": "low",
+      "assignedTo": "john.doe@company.com",
+      "submittedBy": "Manish Tiwari",
+      "submittedDate": "2027-04-01",
+      "dueDate": "2027-04-08",
+      "details": {
+        "amount": "500000",
+        "currency": "INR",
+        "quarter": "Q2-2027"
+      },
+      "id": "f2d0"
+    },
+    {
+      "title": "Tax Filing Review",
+      "description": "Detailed inspection of company tax filings for the previous financial year.",
+      "category": "Finance",
+      "status": "pending",
+      "priority": "medium",
+      "assignedTo": "john.doe@company.com",
+      "submittedBy": "Geeta Phogat",
+      "submittedDate": "2027-05-12",
+      "dueDate": "2027-05-18",
+      "details": {
+        "year": "FY26-27",
+        "document": "Form-16 Review"
+      },
+      "id": "409f"
+    },
+    {
+      "title": "Petty Cash Audit",
+      "description": "Monthly reconciliation of office petty cash and miscellaneous expenses.",
+      "category": "Finance",
+      "status": "pending",
+      "priority": "high",
+      "assignedTo": "john.doe@company.com",
+      "submittedBy": "Sunil Gavaskar",
+      "submittedDate": "2027-06-20",
+      "dueDate": "2027-06-25",
+      "details": {
+        "amount": "12000",
+        "currency": "INR",
+        "location": "Main Office"
+      },
+      "id": "eb3d"
+    },
+    {
+      "title": "Access Request - CRM Access",
+      "description": "User request for read/write access to the Salesforce CRM system.",
+      "category": "Access Request",
+      "status": "approved",
+      "priority": "medium",
+      "assignedTo": "john.doe@company.com",
+      "submittedBy": "Deepika Padukone",
+      "submittedDate": "2025-01-08",
+      "dueDate": "2025-01-09",
+      "details": {
+        "system": "Salesforce",
+        "role": "Sales Rep"
+      },
+      "id": "f745"
+    },
+    {
+      "title": "Access Request - Dashboard Viewer",
+      "description": "Viewer-only access request for the marketing performance dashboard.",
+      "category": "Access Request",
+      "status": "pending",
+      "priority": "high",
+      "assignedTo": "john.doe@company.com",
+      "submittedBy": "Ranveer Singh",
+      "submittedDate": "2025-02-04",
+      "dueDate": "2025-02-06",
+      "details": {
+        "system": "Power BI",
+        "role": "Analyst"
+      },
+      "id": "3683"
+    },
+    {
+      "title": "Access Request - Admin Portal",
+      "description": "Administrative privileges required for the backend management portal.",
+      "category": "Access Request",
+      "status": "pending",
+      "priority": "low",
+      "assignedTo": "john.doe@company.com",
+      "submittedBy": "Katrina Kaif",
+      "submittedDate": "2027-03-01",
+      "dueDate": "2027-03-05",
+      "details": {
+        "system": "Admin Portal",
+        "role": "SysAdmin"
+      },
+      "id": "04a6"
+    },
+    {
+      "title": "Access Request - HRMS",
+      "description": "Employee portal access for a new joiner in the HR department.",
+      "category": "Access Request",
+      "status": "pending",
+      "priority": "medium",
+      "assignedTo": "john.doe@company.com",
+      "submittedBy": "Vicky Kaushal",
+      "submittedDate": "2027-05-03",
+      "dueDate": "2027-05-07",
+      "details": {
+        "system": "HRMS",
+        "role": "HR Generalist"
+      },
+      "id": "f377"
+    },
+    {
+      "title": "Access Request - Analytics Viewer",
+      "description": "Request for access to the real-time analytics portal for product monitoring.",
+      "category": "Access Request",
+      "status": "pending",
+      "priority": "high",
+      "assignedTo": "john.doe@company.com",
+      "submittedBy": "Alia Bhatt",
+      "submittedDate": "2027-06-15",
+      "dueDate": "2027-06-18",
+      "details": {
+        "system": "Analytics Portal",
+        "role": "Product Manager"
+      },
+      "id": "e08d"
+    },
+    {
+      "title": "IT Support - Laptop Replacement",
+      "description": "Hardware failure reported on a legacy machine; replacement requested.",
+      "category": "IT Support",
+      "status": "in_progress",
+      "priority": "high",
+      "assignedTo": "john.doe@company.com",
+      "submittedBy": "Ranbir Kapoor",
+      "submittedDate": "2025-01-03",
+      "dueDate": "2025-01-04",
+      "details": {
+        "assetTag": "LT-4456",
+        "issue": "Blue Screen"
+      },
+      "id": "b059"
+    },
+    {
+      "title": "IT Support - Printer Repair",
+      "description": "Jamming issues and toner leaks reported on the shared printer.",
+      "category": "IT Support",
+      "status": "pending",
+      "priority": "medium",
+      "assignedTo": "john.doe@company.com",
+      "submittedBy": "Sara Ali Khan",
+      "submittedDate": "2025-02-02",
+      "dueDate": "2025-02-05",
+      "details": {
+        "location": "Floor 3",
+        "device": "HP LaserJet"
+      },
+      "id": "4f58"
+    },
+    {
+      "title": "IT Support - Network Upgrade",
+      "description": "Scheduled maintenance and bandwidth upgrade for the office LAN.",
+      "category": "IT Support",
+      "status": "pending",
+      "priority": "low",
+      "assignedTo": "john.doe@company.com",
+      "submittedBy": "Saif Ali Khan",
+      "submittedDate": "2027-03-10",
+      "dueDate": "2027-03-18",
+      "details": {
+        "area": "Office LAN",
+        "type": "Hardware Upgrade"
+      },
+      "id": "dde7"
+    },
+    {
+      "title": "IT Support - Software Installation",
+      "description": "Bulk installation of creative tools for the new design cohort.",
+      "category": "IT Support",
+      "status": "pending",
+      "priority": "medium",
+      "assignedTo": "john.doe@company.com",
+      "submittedBy": "Varun Dhawan",
+      "submittedDate": "2027-05-05",
+      "dueDate": "2027-05-10",
+      "details": {
+        "software": "Adobe Suite",
+        "license": "Creative Cloud"
+      },
+      "id": "6213"
+    },
+    {
+      "title": "IT Support - Mouse Replacement",
+      "description": "Procurement request for a wireless peripheral for ergonomics.",
+      "category": "IT Support",
+      "status": "pending",
+      "priority": "high",
+      "assignedTo": "john.doe@company.com",
+      "submittedBy": "Shraddha Kapoor",
+      "submittedDate": "2027-06-18",
+      "dueDate": "2027-06-20",
+      "details": {
+        "item": "Wireless Mouse",
+        "department": "Engineering"
+      },
+      "id": "cb9d"
+    }
+  ],
+  "comments": []
+}
