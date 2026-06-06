@@ -15,15 +15,43 @@ An Expo-based React Native mobile application built to streamline how managers r
 * 🔐 Role-based access control with navigation redirection based on auth state
 * 💾 Session persistence via Async Storage with "Keep me signed in" option
 
-<!-- ## Screenshots
+## Screenshots
 
 <details>
-<summary>Click to view all screenshots</summary>
+<summary>Click to view sample screenshots</summary>
+
+### Manager Dashboard
+
+<img src="./assets/screenshots/Simulator Screenshot - iPhone 17 Pro - 2026-06-06 at 21.31.19.png" alt="Manager Dashboard" width="300"/>
 
 ### Inbox
 
-<img src="" alt="inbox" width="300"/>
-</details> -->
+<img src="./assets/screenshots/Simulator Screenshot - iPhone 17 Pro - 2026-06-06 at 21.32.18.png" alt="Inbox" width="300"/>
+
+### Manager Profile
+
+<img src="./assets/screenshots/Simulator Screenshot - iPhone 17 Pro - 2026-06-06 at 21.33.25.png" alt="Manager Profile" width="300"/>
+
+### Manager Task View
+
+<img src="./assets/screenshots/Simulator Screenshot - iPhone 17 Pro - 2026-06-06 at 21.34.00.png" alt="Manager Task View" width="300"/>
+
+### Admin Dashboard
+
+<img src="./assets/screenshots/Simulator Screenshot - iPhone 17 Pro - 2026-06-06 at 21.35.09.png" alt="Admin Dashboard" width="300"/>
+
+### Admin Report
+
+<img src="./assets/screenshots/Simulator Screenshot - iPhone 17 Pro - 2026-06-06 at 21.35.22.png" alt="Admin Report" width="300"/>
+
+### User Management
+
+<img src="./assets/screenshots/Simulator Screenshot - iPhone 17 Pro - 2026-06-06 at 21.35.36.png" alt="User Management" width="300"/>
+
+### Admin Task View
+
+<img src="./assets/screenshots/Simulator Screenshot - iPhone 17 Pro - 2026-06-06 at 21.39.33.png" alt="Admin Task View" width="300"/>
+</details>
 
 ## Tech Stack
 
@@ -73,7 +101,12 @@ npm run server
 ### Step 5: Start the Development Server
 
 ```bash
+# Expo Go
 npx expo
+
+# Devices/Emulators
+npx expo run:android
+npx expo run:ios
 ```
 
 ## Dependencies
@@ -86,6 +119,7 @@ npx expo
   "@react-native-picker/picker": "2.11.1",
   "@react-navigation/drawer": "^7.9.11",
   "expo": "~54.0.33",
+  "expo-dev-client": "~6.0.21",
   "expo-linear-gradient": "~15.0.8",
   "expo-router": "~6.0.23",
   "expo-status-bar": "~3.0.9",
