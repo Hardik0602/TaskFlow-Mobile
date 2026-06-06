@@ -21,7 +21,7 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "bundleIdentifier": "com.anonymous.task-flow-mobile"
+      "package": "com.anonymous.taskflowmobile"
     },
     "web": {
       "output": "static",
